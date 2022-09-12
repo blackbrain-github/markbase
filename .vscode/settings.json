@@ -1,0 +1,114 @@
+{
+    "todo-tree.tree.showScanModeButton": false,
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            120
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": false
+    },
+    "dart.flutterCreateAndroidLanguage": "java",
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "dart.flutterSdkPath": "/Users/juusokayhko/Documents/Flutter/SDK/flutter",
+    "editor.tokenColorCustomizations": {
+        // Changes the color of comments
+        "comments": "#ec0868"
+    },
+    "workbench.welcomePage.hiddenCategories": [
+        "Beginner",
+        "Setup"
+    ],
+    "liveServer.settings.donotShowInfoMsg": true,
+    "editor.rulers": [],
+    "editor.wordWrapColumn": 300,
+    "dart.previewFlutterUiGuides": true,
+    "editor.cursorBlinking": "expand",
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    },
+    "liveServer.settings.donotVerifyTags": true,
+    "editor.linkedEditing": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.maxColumn": 300,
+    "dart.lineLength": 300,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "dart.showInspectorNotificationsForWidgetErrors": false,
+    "explorer.confirmDelete": false,
+    "git.enableSmartCommit": true,
+    "files.exclude": {
+        ".dart_tool": true,
+        ".flutter-plugins": true,
+        ".flutter-plugins-dependencies": true,
+        ".gitignore": true,
+        ".idea": true,
+        ".metadata": true,
+        ".packages": true,
+        "**/.classpath": true,
+        "**/.factorypath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "analysis_options.yaml": true,
+        "android": true,
+        "build": true,
+        "markbase.iml": true,
+        "pubspec.lock": true
+    },
+    "explorer.confirmDragAndDrop": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.formatOnSave": true,
+    "dart.debugExternalPackageLibraries": false,
+    "dart.debugSdkLibraries": false,
+    "workbench.startupEditor": "none",
+    "bracket-pair-colorizer-2.depreciation-notice": false,
+    "workbench.colorTheme": "Dracula",
+    "workbench.iconTheme": "Monokai Pro (Filter Spectrum) Icons",
+    "Notes.notesLocation": "/Users/juusokayhko/Documents/Flutter/snipbeat",
+    "cSpell.userWords": [
+        "audioplayers",
+        "cupertino",
+        "debouncetime",
+        "firestore",
+        "Flashdrop",
+        "flutterfire",
+        "Halftalk",
+        "Homescreen",
+        "Inited",
+        "livetalk",
+        "LTRB",
+        "Markbase",
+        "Notifer",
+        "signup",
+        "snipbeat",
+        "sniplists",
+        "unfocus"
+    ],
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.remove": true,
+        // Fixes all on saved (const etc...)
+        "source.fixAll": true
+    },
+    "cSpell.ignoreWords": [
+        "Beatirithm",
+        "Beatle",
+        "Songlist",
+        "beatbite",
+        "dotenv"
+    ],
+    "dart.warnWhenEditingFilesInPubCache": false,
+    "json.schemas": [],
+}

@@ -1,0 +1,73 @@
+name: Markbase
+description: A new Flutter project.
+
+# TODO version and build name
+version: 1.0.0+1
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+dependencies:
+  animations: ^2.0.2
+  cloud_firestore: ^3.4.6
+  cloud_functions: ^3.3.3
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^3.6.2
+  firebase_core: ^1.21.1
+  firebase_remote_config: ^2.0.16
+  firebase_storage: ^10.3.4
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.18.5+1
+  flutter_svg: ^1.0.3
+  flutter_switch: ^0.3.2
+  flutterfire_ui: ^0.4.3+4
+  get_storage: ^2.0.3
+  image_picker: ^0.8.5+3
+  logger: ^1.1.0
+  modal_bottom_sheet: ^2.1.0
+  package_info_plus: ^1.4.3+1
+  rich_text_controller: ^1.4.0
+  sliding_up_panel: ^2.0.0+1
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/
+
+  uses-material-design: true
+
+  # There is an issue with the documented way of adding custom fonts, this is a workaround
+  fonts:
+    - family: Light
+      fonts:
+        - asset: assets/fonts/Gilroy-Light.ttf
+
+    - family: Regular
+      fonts:
+        - asset: assets/fonts/Gilroy-Regular.ttf
+
+    - family: Medium
+      fonts:
+        - asset: assets/fonts/Gilroy-Medium.ttf
+
+    - family: SemiBold
+      fonts:
+        - asset: assets/fonts/Gilroy-SemiBold.ttf
+
+    - family: Bold
+      fonts:
+        - asset: assets/fonts/Gilroy-Bold.ttf
+
+    - family: ExtraBold
+      fonts:
+        - asset: assets/fonts/Gilroy-ExtraBold.ttf
+
+    - family: Black
+      fonts:
+        - asset: assets/fonts/Gilroy-Black.ttf

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>431481614037-uacotokmqqtrkkdic2mfaqm4iol7pm9e.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.431481614037-uacotokmqqtrkkdic2mfaqm4iol7pm9e</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA0-Jzn960vAzPDy_kkqbSKMJ5dC8na9FA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>431481614037</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>io.markbase.markbase</string>
+	<key>PROJECT_ID</key>
+	<string>markbase-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>markbase-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:431481614037:ios:b376fc5c5fe515b14f7c5c</string>
+	<key>DATABASE_URL</key>
+	<string>https://markbase-dev-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
