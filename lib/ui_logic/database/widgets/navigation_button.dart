@@ -12,20 +12,20 @@ class NavigationButton extends HookWidget {
   Widget build(BuildContext context) {
     return CustomAnimatedWidget(
       onPressed: () {
-        if (logic.history.isNotEmpty) logic.goBack();
+        if (logic.previousCollections.isNotEmpty) logic.goBack();
       },
-      animate: logic.history.isNotEmpty ? true : false,
+      animate: logic.previousCollections.isNotEmpty ? true : false,
       child: Container(
         height: 40,
         width: 53,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: logic.history.isNotEmpty ? AppColors.accentColor : AppColors.getDisabledButtonColor(),
+          color: logic.previousCollections.isNotEmpty ? AppColors.accentColor : AppColors.getDisabledButtonColor(),
           borderRadius: BorderRadius.circular(100),
         ),
         child: Icon(
           Icons.arrow_back_rounded,
-          color: logic.history.isNotEmpty ? AppColors.selectedButtonTextColor : AppColors.getDisabledButtonTextColor(),
+          color: logic.previousCollections.isNotEmpty ? AppColors.selectedButtonTextColor : AppColors.getDisabledButtonTextColor(),
           size: 18,
         ),
       ),

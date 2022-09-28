@@ -1,8 +1,10 @@
 // Packages
+import 'package:Markbase/ui_logic/common/app.dart';
 import 'package:Markbase/ui_logic/common/widgets/buttons/important_button.dart';
 import 'package:Markbase/ui_logic/common/widgets/buttons/less_important_button.dart';
 import 'package:Markbase/ui_logic/common/widgets/content_spacer.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
+import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 // CustomBottomSheet
@@ -68,28 +70,24 @@ class CustomPopup extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width - 20,
         margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Theme.of(context).colorScheme.background,
+          color: AppColors.getPrimaryBackgroundColor(),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
-            ),
+            CustomText(title, size: 18, fontWeight: FontWeight.w600),
             if (description != "") const VerticalSpacer(d: 5),
             if (description != "")
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Text(
-                  description,
-                  style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
-                ),
+              CustomText(
+                description,
+                size: 16,
+                softWrap: true,
               ),
-            const VerticalSpacer(d: 10),
+            const VerticalSpacer(d: 15),
             ImportantButton(
               onPressed: () {
                 if (buttonFunction != null) {
@@ -98,7 +96,7 @@ class CustomPopup extends StatelessWidget {
               },
               title: buttonTitle,
             ),
-            const VerticalSpacer(d: 5),
+            const VerticalSpacer(d: 10),
             if (button2Title != null)
               LessImportantButton(
                 function: () {
@@ -147,87 +145,6 @@ class NoInternetNotification extends StatelessWidget {
 }
 
 // Custom text field
-class CustomTextField extends StatelessWidget {
-  final String title;
-  final Function validator;
-  final Function onSaved;
-  final Function? onChanged;
-  final String? prefillText;
-  final String? suffixText;
-  final bool obscureText;
-
-  const CustomTextField({
-    required this.title,
-    required this.validator,
-    required this.onSaved,
-    this.onChanged,
-    this.prefillText,
-    this.suffixText,
-    this.obscureText = false,
-  });
-
-  // ---------------------------- BUILD ------------------------------ //
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (s) {
-        return validator(s);
-      },
-      onSaved: (s) {
-        onSaved(s);
-      },
-      onChanged: (s) {
-        if (onChanged != null) {
-          onChanged!(s);
-        }
-      },
-      style: const TextStyle(
-        fontSize: 16,
-        color: Colors.black,
-      ),
-      initialValue: (prefillText == null) ? null : prefillText,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: const TextStyle(
-          fontSize: 16,
-          color: Colors.grey,
-        ),
-        suffixText: (suffixText == null) ? null : suffixText,
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        fillColor: const Color(0xFFF3F3F4),
-        filled: true,
-      ),
-      cursorColor: Colors.black,
-      cursorHeight: 20,
-      cursorRadius: const Radius.circular(100),
-    );
-  }
-}
 
 // Custom app bar
 

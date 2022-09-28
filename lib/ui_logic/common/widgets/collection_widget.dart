@@ -19,50 +19,50 @@ class CollectionWidget extends HookWidget {
     }
 
     return Listen(
-        to: CommonLogic.theme,
-        builder: (_) {
-          return AnimatedCrossFade(
-            duration: const Duration(seconds: 1),
-            crossFadeState: CrossFadeState.showFirst,
-            secondChild: Container(),
-            firstChild: CustomAnimatedWidget(
-              onPressed: () => onPressed(),
-              endSize: 0.99,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.getNoteColor(),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 20,
-                      color: AppColors.getShadowColor(),
-                    )
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CustomText(
-                        collection.title ?? 'collection_title',
-                        size: 16,
-                        fontWeight: FontWeight.w700,
-                        maxLines: 1,
-                      ),
-                    ),
-                    CustomText(
-                      collectionLabel(),
-                      size: 16,
-                      maxLines: 1,
-                      color: TextColorType.secondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
-                ),
+      to: CommonLogic.theme,
+      builder: (_) {
+        return CustomAnimatedWidget(
+          onPressed: () => onPressed(),
+          endSize: 0.99,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.getNoteColor(),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 20,
+                  color: AppColors.getShadowColor(),
+                )
+              ],
+              border: Border.all(
+                width: 0.5,
+                color: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.05),
               ),
             ),
-          );
-        });
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: CustomText(
+                    collection.title ?? 'collection_title',
+                    size: 16,
+                    fontWeight: FontWeight.w700,
+                    maxLines: 1,
+                  ),
+                ),
+                CustomText(
+                  collectionLabel(),
+                  size: 16,
+                  maxLines: 1,
+                  color: TextColorType.secondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

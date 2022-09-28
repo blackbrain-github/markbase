@@ -14,6 +14,7 @@ class CustomText extends StatelessWidget {
   final int? maxLines;
   final TextAlign textAlign;
   final bool softWrap;
+  final bool underlined;
 
   const CustomText(
     this.text, {
@@ -24,9 +25,10 @@ class CustomText extends StatelessWidget {
     this.customColor,
     this.customLightModeColor,
     this.customDarkModeColor,
-    this.maxLines = 1,
+    this.maxLines,
     this.textAlign = TextAlign.start,
     this.softWrap = false,
+    this.underlined = false,
   }) : super(key: key);
 
   @override
@@ -74,6 +76,7 @@ class CustomText extends StatelessWidget {
             fontFamily: fontWeightAsFamily(),
             fontSize: size,
             overflow: TextOverflow.visible,
+            decoration: underlined ? TextDecoration.underline : null,
           ),
           softWrap: softWrap,
           maxLines: maxLines,

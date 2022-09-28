@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Note {
   final String id;
   String body;
-  String parentPath;
+  String inCollectionPath;
   DateTime? lastEdited;
 
   Note({
     required this.id,
     required this.body,
-    required this.parentPath,
+    required this.inCollectionPath,
     required this.lastEdited,
   });
 
@@ -19,7 +19,7 @@ class Note {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'parentPath': parentPath,
+      'inCollectionPath': inCollectionPath,
       'body': body,
       'lastEdited': lastEdited != null ? lastEdited!.toIso8601String() : null,
     };
@@ -28,7 +28,7 @@ class Note {
   static Note fromMap(Map<String, dynamic> map) {
     return Note(
       id: map['id'],
-      parentPath: map['parentPath'],
+      inCollectionPath: map['inCollectionPath'],
       body: map['body'],
       lastEdited: DateTime.parse(map['lastEdited']),
     );
@@ -38,7 +38,7 @@ class Note {
     return Note(
       id: "",
       body: "",
-      parentPath: inCollection.parentPath ?? '',
+      inCollectionPath: inCollection.path,
       lastEdited: null,
     );
   }
@@ -46,7 +46,7 @@ class Note {
   static Note fromQueryDocumentSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
     return Note(
       id: snapshot.id,
-      parentPath: snapshot.data()['parentPath'],
+      inCollectionPath: snapshot.data()['inCollectionPath'],
       body: snapshot.data()['body'],
       lastEdited: snapshot.data()["lastEdited"] is String ? DateTime.parse(snapshot.data()["lastEdited"]) : snapshot.data()["lastEdited"].toDate(),
     );
@@ -55,7 +55,7 @@ class Note {
   static Note fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return Note(
       id: snapshot.id,
-      parentPath: snapshot.data()?['parentPath'],
+      inCollectionPath: snapshot.data()?['inCollectionPath'],
       body: snapshot.data()?['body'],
       lastEdited: snapshot.data()?["lastEdited"] is String ? DateTime.parse(snapshot.data()?["lastEdited"]) : snapshot.data()?["lastEdited"].toDate(),
     );
@@ -73,7 +73,7 @@ class Note {
   static Note fromDocumentReference(DocumentReference<Map<String, dynamic>> documentReference) {
     return Note(
       id: documentReference.id,
-      parentPath: documentReference.path,
+      inCollectionPath: documentReference.path,
       body: '',
       lastEdited: DateTime.now(),
     );

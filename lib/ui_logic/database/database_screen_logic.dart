@@ -9,38 +9,94 @@ import 'package:flutter/material.dart';
 class DatabaseScreenLogic {
   final BuildContext context;
   final VariableNotifier<Collection> currentCollection;
-  final VariableNotifier<List<Collection>> currentCollectionCollections;
-  final VariableNotifier<List<Note>> currentCollectionNotes;
 
-  final VariableNotifier<bool> collectionsLoading;
-  final VariableNotifier<bool> notesLoading;
-
-  List<Collection> history = [];
-  int levelIndex = 0;
-  Future? notesFuture;
+  List<Collection> previousCollections = []; // collections before currentCollection, in order
 
   String newCollectionTitle = '';
 
   DatabaseScreenLogic(
     this.context, {
     required this.currentCollection,
-    required this.currentCollectionCollections,
-    required this.currentCollectionNotes,
-    required this.collectionsLoading,
-    required this.notesLoading,
   });
 
-  // Init
-  void loadRootCachedCollectionsAndNotes() {
-    loadCachedCollectionsForPath();
-    loadCachedNotesForPath();
+  void init() async {
+    List<Collection> cachedCollections = getCachedCollectionsForPath('');
+    List<Note> cachedNotes = getCachedNotesForPath('');
 
-    history.add(currentCollection.get);
+    currentCollection.set(
+      Collection(
+        id: currentCollection.get.id,
+        title: currentCollection.get.title,
+        path: currentCollection.get.path,
+        parentPath: currentCollection.get.parentPath,
+        collections: cachedCollections,
+        collectionCount: cachedCollections.length,
+        notes: cachedNotes,
+        noteCount: cachedNotes.length,
+      ),
+    );
+
+    List<Collection> collections = await getCollectionsForPath('');
+    List<Note> notes = await getNotesForPath('');
+
+    currentCollection.set(
+      Collection(
+        id: currentCollection.get.id,
+        title: currentCollection.get.title,
+        path: currentCollection.get.path,
+        parentPath: currentCollection.get.parentPath,
+        collections: collections,
+        collectionCount: collections.length,
+        notes: notes,
+        noteCount: notes.length,
+      ),
+    );
   }
 
-  Future<void> loadRootCollectionsAndNotes() async {
-    loadCollectionsForPath(path: '');
-    loadNotesForPath(path: '');
+  // Get cached
+  List<Collection> getCachedCollectionsForPath(String parentPath) {
+    var cachedCollectionsForPath = AppVariables.appState.read('collections($parentPath)');
+
+    if (cachedCollectionsForPath != null) {
+      List<Collection> _collections = [];
+      for (var i = 0; i < cachedCollectionsForPath.length; i++) {
+        _collections.add(Collection.fromMap(cachedCollectionsForPath[i]));
+      }
+      return _collections;
+    }
+    return [];
+  }
+
+  List<Note> getCachedNotesForPath(String parentPath) {
+    var cachedNotesForPath = AppVariables.appState.read('notes($parentPath)');
+
+    if (cachedNotesForPath != null) {
+      List<Note> _notes = [];
+      for (var i = 0; i < cachedNotesForPath.length; i++) {
+        _notes.add(Note.fromMap(cachedNotesForPath[i]));
+      }
+      return _notes;
+    }
+    return [];
+  }
+
+  // Get from server
+  Future<List<Collection>> getCollectionsForPath(String path) async {
+    return await Database.get.collections(path).then((_collections) async {
+      await cacheCollectionsForPath(_collections);
+      return _collections;
+    }).catchError((e) {
+      throw e;
+    });
+  }
+
+  Future<List<Note>> getNotesForPath(String path) async {
+    return await Database.get.notes(path).then((_notes) async {
+      await cacheNotesForPath(_notes);
+      return _notes;
+    }).catchError((e) {
+      throw e;
+    });
   }
 
   // Cache
@@ -49,7 +105,7 @@ class DatabaseScreenLogic {
     for (var i = 0; i < collectionsToCache.length; i++) {
       collectionsAsMap.add(collectionsToCache[i].toMap());
     }
-    await AppVariables.appState.write('collections(${currentCollection.get.parentPath})', collectionsAsMap);
+    await AppVariables.appState.write('collections(${collectionsToCache.first.parentPath})', collectionsAsMap);
   }
 
   Future<void> cacheNotesForPath(List<Note> notesToCache) async {
@@ -61,113 +117,58 @@ class DatabaseScreenLogic {
     await AppVariables.appState.write('notes(${currentCollection.get.parentPath})', notesAsMap);
   }
 
-  // Load cached
-  void loadCachedCollectionsForPath({String? parentPath}) {
-    var cachedCollectionsForPath = AppVariables.appState.read('collections(${parentPath ?? currentCollection.get.parentPath})');
-
-    if (cachedCollectionsForPath != null) {
-      List<Collection> _collections = [];
-      for (var i = 0; i < cachedCollectionsForPath.length; i++) {
-        _collections.add(Collection.fromMap(cachedCollectionsForPath[i]));
-      }
-      currentCollectionCollections.set(_collections);
-    }
-  }
-
-  void loadCachedNotesForPath({String? parentPath}) {
-    var cachedNotesForPath = AppVariables.appState.read('notes(${parentPath ?? currentCollection.get.parentPath})');
-
-    if (cachedNotesForPath != null) {
-      List<Note> _notes = [];
-      for (var i = 0; i < cachedNotesForPath.length; i++) {
-        _notes.add(Note.fromMap(cachedNotesForPath[i]));
-      }
-
-      currentCollectionNotes.set(_notes);
-    }
-  }
-
-  // Load server
-  Future<void> loadCollectionsForPath({String? path}) async {
-    collectionsLoading.set(true);
-    if (path != null) {
-      await Database.get.collections(path).then((_collections) {
-        cacheCollectionsForPath(_collections);
-        currentCollection.set(currentCollection.get..collections = _collections, notify: false);
-        currentCollectionCollections.set(_collections);
-      });
-    } else {
-      await Database.get.collections(currentCollection.get.path!).then((_collections) {
-        cacheCollectionsForPath(_collections);
-        currentCollection.set(currentCollection.get..collections = _collections, notify: false);
-        currentCollectionCollections.set(_collections);
-      });
-    }
-    collectionsLoading.set(false);
-  }
-
-  Future<void> loadNotesForPath({String? path}) async {
-    notesLoading.set(true);
-    if (path != null) {
-      await Database.get.notes(path).then((_notes) {
-        cacheNotesForPath(_notes);
-        currentCollection.set(currentCollection.get..notes = _notes, notify: false);
-        currentCollectionNotes.set(_notes);
-      });
-    } else {
-      await Database.get.notes(currentCollection.get.path!).then((_notes) {
-        cacheNotesForPath(_notes);
-        currentCollection.set(currentCollection.get..notes = _notes, notify: false);
-        currentCollectionNotes.set(_notes);
-      });
-    }
-    notesLoading.set(false);
-  }
-
   // Navigation
   void goToCollection(Collection collection) async {
-    history.add(collection);
-    currentCollection.set(history[levelIndex++]);
-    print(levelIndex);
-
-    print("Changed current collection");
-    print(currentCollection.get.id);
-    print(currentCollection.get.title);
-    print(currentCollection.get.title);
-    print(currentCollection.get.path);
-    print(currentCollection.get.parentPath);
-
-    currentCollectionCollections.set([]);
-    currentCollectionNotes.set([]);
+    previousCollections.add(currentCollection.get);
+    currentCollection.set(collection);
 
     // Get cached
-    loadCachedCollectionsForPath();
-    loadCachedNotesForPath();
+    currentCollection.set(
+      Collection.mergeFields(
+        currentCollection.get,
+        collections: getCachedCollectionsForPath(currentCollection.get.path),
+      ),
+      notify: false,
+    );
+    currentCollection.set(
+      Collection.mergeFields(
+        currentCollection.get,
+        notes: getCachedNotesForPath(currentCollection.get.path),
+      ),
+      notify: true,
+    );
 
-    await loadCollectionsForPath();
-    await loadNotesForPath();
+    // Get server
+    currentCollection.set(
+      Collection.mergeFields(
+        currentCollection.get,
+        collections: await getCollectionsForPath(currentCollection.get.path),
+      ),
+      notify: false,
+    );
+    currentCollection.set(
+      Collection.mergeFields(
+        currentCollection.get,
+        notes: await getNotesForPath(currentCollection.get.path),
+      ),
+      notify: true,
+    );
   }
 
   void goBack() {
-    print(history.length);
-    currentCollection.set(history[history.length - 2]);
-    loadCachedCollectionsForPath(parentPath: history[history.length - 2].parentPath);
-    loadCachedNotesForPath(parentPath: history[history.length - 2].parentPath);
-
-    List<Collection> updatedHistory = history;
-    updatedHistory.removeAt(updatedHistory.length - 1);
-    history = updatedHistory;
+    currentCollection.set(previousCollections.last);
+    previousCollections.removeAt(previousCollections.length - 1);
   }
 
   Future<void> createNewCollection() async {
     if (newCollectionTitle != '') {
       try {
-        if (currentCollection.get.isEmpty()) {
+        if (currentCollection.get.isRoot()) {
           Collection newCollection = await Database.create.collection(title: newCollectionTitle);
 
-          List<Collection> updatedCollections = currentCollectionCollections.get;
+          List<Collection> updatedCollections = currentCollection.get.collections ?? [];
           updatedCollections.add(newCollection);
-          currentCollectionCollections.set(updatedCollections.toList());
+          currentCollection.set(Collection.mergeFields(currentCollection.get, collections: updatedCollections));
         } else {
           Collection newCollection = await Database.create.collection(
             title: newCollectionTitle,
@@ -175,9 +176,9 @@ class DatabaseScreenLogic {
             parentId: currentCollection.get.id!,
           );
 
-          List<Collection> updatedCollections = currentCollectionCollections.get;
+          List<Collection> updatedCollections = currentCollection.get.collections ?? [];
           updatedCollections.add(newCollection);
-          currentCollectionCollections.set(updatedCollections.toList());
+          currentCollection.set(Collection.mergeFields(currentCollection.get, collections: updatedCollections));
         }
 
         Navigator.of(context).maybePop();
@@ -190,14 +191,13 @@ class DatabaseScreenLogic {
   }
 
   Future<void> refresh() async {
-    print(currentCollection.get.parentPath);
     await Database.get.collections(currentCollection.get.parentPath ?? '').then((_collections) {
       cacheCollectionsForPath(_collections);
-      currentCollectionCollections.set(_collections);
+      currentCollection.set(currentCollection.get..collections = _collections);
     });
     await Database.get.notes(currentCollection.get.parentPath ?? '').then((_notes) {
       cacheNotesForPath(_notes);
-      currentCollectionNotes.set(_notes);
+      currentCollection.set(currentCollection.get..notes = _notes);
     });
   }
 }

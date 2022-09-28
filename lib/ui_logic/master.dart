@@ -10,6 +10,9 @@ class Master extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('MASTER:');
+    print(CommonLogic.appUser.get?.id);
+
     return Listen(
       to: CommonLogic.theme,
       builder: (value) => const HomeScreen(),

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Collection {
   String? id;
   String? title;
-  String? path; // always in format '/collection1/collection2/collection3', not slash at the end
+  String path; // always in format '/collection1/collection2/collection3', not slash at the end
   String? parentPath; // always in format '/collection1/collection2', not slash at the end, "" if in root
   int? collectionCount;
   int? noteCount;
@@ -22,18 +22,18 @@ class Collection {
     this.notes,
   });
 
-  static Collection empty() {
+  static Collection root() {
     return Collection(
       id: null,
       title: null,
-      path: null,
+      path: '',
       parentPath: null,
       collectionCount: null,
       noteCount: null,
     );
   }
 
-  bool isEmpty() => id == null && title == null && path == null && parentPath == null && collectionCount == null && noteCount == null && collections == null && notes == null;
+  bool isRoot() => path == '';
 
   Map<String, dynamic> toMap() {
     List<Map<String, dynamic>> collectionsAsMap = [];
@@ -100,5 +100,25 @@ class Collection {
     }
 
     return collections;
+  }
+
+  /// Merges any field to current object
+  static Collection mergeFields(
+    Collection collection, {
+    List<Collection>? collections,
+    List<Note>? notes,
+    int? collectionCount,
+    int? noteCount,
+  }) {
+    return Collection(
+      id: collection.id,
+      title: collection.title,
+      path: collection.path,
+      parentPath: collection.parentPath,
+      collections: collections ?? collection.collections,
+      notes: notes ?? collection.notes,
+      collectionCount: collectionCount ?? collection.collectionCount,
+      noteCount: noteCount ?? collection.noteCount,
+    );
   }
 }

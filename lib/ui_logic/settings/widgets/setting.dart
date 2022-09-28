@@ -1,3 +1,5 @@
+import 'package:Markbase/ui_logic/common/app.dart';
+import 'package:Markbase/ui_logic/common/common_logic.dart';
 import 'package:Markbase/ui_logic/common/widgets/buttons/important_button.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
@@ -18,7 +20,7 @@ class Setting extends HookWidget {
 
   Setting({
     required this.type,
-    required this.title,
+    this.title = '',
     this.options,
     this.selectedOption,
     this.onTap,
@@ -33,12 +35,13 @@ class Setting extends HookWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CustomText(
-              title + ':',
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.w600,
-              size: 16,
-            ),
+            if (title != '')
+              CustomText(
+                title + ':',
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.w600,
+                size: 16,
+              ),
             const SizedBox(height: 5),
             SizedBox(
               height: 30,
@@ -71,11 +74,24 @@ class Setting extends HookWidget {
       case SettingType.action:
         return CustomAnimatedWidget(
           onPressed: () => action!(),
-          child: CustomText(
-            title,
-            size: 16,
-            fontWeight: FontWeight.w600,
-            color: TextColorType.accent,
+          child: Container(
+            color: Colors.white.withOpacity(0),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  title,
+                  size: 16,
+                  fontWeight: FontWeight.w600,
+                  color: TextColorType.accent,
+                ),
+                Icon(
+                  Icons.arrow_right_rounded,
+                  color: CommonLogic.theme.get.name == 'light' ? Colors.black.withOpacity(0.15) : AppColors.getInversePrimaryBackgroundColor().withOpacity(0.2),
+                ),
+              ],
+            ),
           ),
         );
       default:

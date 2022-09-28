@@ -1,3 +1,5 @@
+import 'package:Markbase/ui_logic/common/app.dart';
+import 'package:Markbase/ui_logic/common/common_logic.dart' as Common;
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -9,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? suffixText;
   final bool obscureText;
   final FocusNode? focusNode;
+  final Common.Theme? theme;
 
   const CustomTextField({
     required this.title,
@@ -19,66 +22,82 @@ class CustomTextField extends StatelessWidget {
     this.suffixText,
     this.obscureText = false,
     this.focusNode,
+    this.theme,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (s) {
-        return validator(s);
-      },
-      onSaved: (s) {
-        onSaved(s);
-      },
-      onChanged: (s) {
-        if (onChanged != null) {
-          onChanged!(s);
-        }
-      },
-      style: const TextStyle(
-        fontSize: 16,
-        color: Colors.black,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 5,
+            color: AppColors.getShadowColor(theme: theme),
+          )
+        ],
       ),
-      initialValue: (prefillText == null) ? null : prefillText,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      decoration: InputDecoration(
-        hintText: title,
-        hintStyle: const TextStyle(
+      child: TextFormField(
+        validator: (s) {
+          return validator(s);
+        },
+        onSaved: (s) {
+          onSaved(s);
+        },
+        onChanged: (s) {
+          if (onChanged != null) {
+            onChanged!(s);
+          }
+        },
+        style: TextStyle(
           fontSize: 16,
-          color: Colors.grey,
+          color: AppColors.getPrimaryTextColor(theme: theme),
         ),
-        suffixText: (suffixText == null) ? null : suffixText,
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+        initialValue: (prefillText == null) ? null : prefillText,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(
+            bottom: 12,
+            left: 12,
+            right: 12,
           ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+          hintText: title,
+          hintStyle: TextStyle(
+            fontSize: 16,
+            color: AppColors.getSecondaryTextColor(theme: theme),
           ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+          suffixText: (suffixText == null) ? null : suffixText,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(color: AppColors.getInversePrimaryBackgroundColor(theme: theme).withOpacity(0.1), width: 0.5),
           ),
-          borderSide: BorderSide(style: BorderStyle.none),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(color: AppColors.getInversePrimaryBackgroundColor(theme: theme).withOpacity(0.1), width: 0.5),
           ),
-          borderSide: BorderSide(style: BorderStyle.none),
+          errorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(style: BorderStyle.none),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(style: BorderStyle.none),
+          ),
+          fillColor: AppColors.getNoteColor(theme: theme),
+          filled: true,
         ),
-        fillColor: const Color(0xFFF3F3F4),
-        filled: true,
+        cursorColor: AppColors.getInversePrimaryBackgroundColor(theme: theme),
+        cursorHeight: 20,
+        cursorRadius: const Radius.circular(100),
       ),
-      cursorColor: Colors.black,
-      cursorHeight: 20,
-      cursorRadius: const Radius.circular(100),
     );
   }
 }

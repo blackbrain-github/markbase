@@ -49,8 +49,9 @@ class _NoteScreenState extends State<NoteScreen> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: AppColors.getNoteColor(),
+        backgroundColor: AppColors.getPrimaryBackgroundColor(),
         body: SafeArea(
+          bottom: false,
           child: Stack(
             children: [
               Column(
@@ -83,7 +84,6 @@ class _NoteScreenState extends State<NoteScreen> {
                                 ),
                               ),
                               style: TextStyle(
-                                fontFamily: "Medium",
                                 fontSize: 14,
                                 color: AppColors.getPrimaryTextColor(),
                               ),

@@ -1,91 +1,159 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Markbase/ui_logic/common/common_logic.dart' as Common;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get_storage/get_storage.dart';
-
-class AppUser {
-  static bool exists = FirebaseAuth.instance.currentUser != null;
-  static String? id = FirebaseAuth.instance.currentUser?.uid;
-  static String? displayName = FirebaseAuth.instance.currentUser?.displayName;
-  static String? email = FirebaseAuth.instance.currentUser?.email;
-}
 
 class AppColors {
   // \\ // \\ // \\ // \\ // UNIVERSAL \\ // \\ // \\ // \\ // \\
 
+  static bool isLightMode() => AppVariables.appState.read('theme') == null || AppVariables.appState.read('theme') == 'system'
+      ? SchedulerBinding.instance.window.platformBrightness == Brightness.light
+          ? true
+          : false
+      : AppVariables.appState.read('theme') == 'light'
+          ? true
+          : false;
+
   static const Color accentColor = Color(0xFFFF520D);
 
-  static Color getPrimaryBackgroundColor() => AppVariables.appState.read('theme') == null
-      ? primaryBackgroundColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? primaryBackgroundColorLightMode
-          : primaryBackgroundColorDarkMode;
+  static Color getPrimaryBackgroundColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return primaryBackgroundColorLightMode;
+      } else {
+        return primaryBackgroundColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? primaryBackgroundColorLightMode : primaryBackgroundColorDarkMode;
+    }
+  }
 
-  static Color getInversePrimaryBackgroundColor() => AppVariables.appState.read('theme') == null
-      ? primaryBackgroundColorDarkMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? primaryBackgroundColorDarkMode
-          : primaryBackgroundColorLightMode;
+  static Color getInversePrimaryBackgroundColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return primaryBackgroundColorDarkMode;
+      } else {
+        return primaryBackgroundColorLightMode;
+      }
+    } else {
+      return isLightMode() ? primaryBackgroundColorDarkMode : primaryBackgroundColorLightMode;
+    }
+  }
 
-  static Color getSecondaryBackgroundColor() => AppVariables.appState.read('theme') == null
-      ? secondaryBackgroundColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? secondaryBackgroundColorLightMode
-          : secondaryBackgroundColorDarkMode;
+  static Color getSecondaryBackgroundColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return secondaryBackgroundColorLightMode;
+      } else {
+        return secondaryBackgroundColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? secondaryBackgroundColorLightMode : secondaryBackgroundColorDarkMode;
+    }
+  }
 
-  static Color getNoteColor() => AppVariables.appState.read('theme') == null
-      ? noteColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? noteColorLightMode
-          : noteColorDarkMode;
+  static Color getNoteColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return noteColorLightMode;
+      } else {
+        return noteColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? noteColorLightMode : noteColorDarkMode;
+    }
+  }
 
-  static Color getShadowColor() => AppVariables.appState.read('theme') == null
-      ? shadowColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? shadowColorLightMode
-          : shadowColorDarkMode;
+  static Color getShadowColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return shadowColorLightMode;
+      } else {
+        return shadowColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? shadowColorLightMode : shadowColorDarkMode;
+    }
+  }
 
   // Text
-  static Color getPrimaryTextColor() => AppVariables.appState.read('theme') == null
-      ? primaryTextColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? primaryTextColorLightMode
-          : primaryTextColorDarkMode;
+  static Color getPrimaryTextColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return primaryTextColorLightMode;
+      } else {
+        return primaryTextColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? primaryTextColorLightMode : primaryTextColorDarkMode;
+    }
+  }
 
-  static Color getInversePrimaryTextColor() => AppVariables.appState.read('theme') == null
-      ? primaryTextColorDarkMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? primaryTextColorDarkMode
-          : primaryTextColorLightMode;
+  static Color getInversePrimaryTextColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return primaryTextColorDarkMode;
+      } else {
+        return primaryTextColorLightMode;
+      }
+    } else {
+      return isLightMode() ? primaryTextColorDarkMode : primaryTextColorLightMode;
+    }
+  }
 
-  static Color getSecondaryTextColor() => AppVariables.appState.read('theme') == null
-      ? secondaryTextColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? secondaryTextColorLightMode
-          : secondaryTextColorDarkMode;
+  static Color getSecondaryTextColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return secondaryTextColorLightMode;
+      } else {
+        return secondaryTextColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? secondaryTextColorLightMode : secondaryTextColorDarkMode;
+    }
+  }
 
   // Button
   static const Color selectedButtonColor = accentColor;
   static const Color selectedButtonTextColor = Color(0xFFFFFFFF);
 
-  static Color getUnselectedButtonColor() => AppVariables.appState.read('theme') == null
-      ? unselectedButtonBackgroundColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? unselectedButtonBackgroundColorLightMode
-          : unselectedButtonBackgroundColorDarkMode;
+  static Color getUnselectedButtonColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return unselectedButtonBackgroundColorLightMode;
+      } else {
+        return unselectedButtonBackgroundColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? unselectedButtonBackgroundColorLightMode : unselectedButtonBackgroundColorDarkMode;
+    }
+  }
 
   static const Color unselectedButtonTextColor = Color(0xFFAAAAAA);
 
-  static Color getDisabledButtonColor() => AppVariables.appState.read('theme') == null
-      ? disabledButtonBackgroundColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? disabledButtonBackgroundColorLightMode
-          : disabledButtonBackgroundColorDarkMode;
+  static Color getDisabledButtonColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return disabledButtonBackgroundColorLightMode;
+      } else {
+        return disabledButtonBackgroundColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? disabledButtonBackgroundColorLightMode : disabledButtonBackgroundColorDarkMode;
+    }
+  }
 
-  static Color getDisabledButtonTextColor() => AppVariables.appState.read('theme') == null
-      ? disabledButtonTextColorLightMode
-      : AppVariables.appState.read('theme') == 'light'
-          ? disabledButtonTextColorLightMode
-          : disabledButtonTextColorDarkMode;
+  static Color getDisabledButtonTextColor({Common.Theme? theme}) {
+    if (theme != null) {
+      if (theme == Common.Theme.light) {
+        return disabledButtonTextColorLightMode;
+      } else {
+        return disabledButtonTextColorDarkMode;
+      }
+    } else {
+      return isLightMode() ? disabledButtonTextColorLightMode : disabledButtonTextColorDarkMode;
+    }
+  }
 
   // \\ // \\ // \\ // \\ // LIGHT \\ // \\ // \\ // \\ // \\
 
@@ -110,7 +178,7 @@ class AppColors {
   // \\ // \\ // \\ // \\ // DARK \\ // \\ // \\ // \\ // \\
 
   // General
-  static const Color primaryBackgroundColorDarkMode = Color(0xFF0F0F0F);
+  static const Color primaryBackgroundColorDarkMode = Color(0xFF000000);
   static const Color secondaryBackgroundColorDarkMode = Color(0xFF202020);
   static const Color noteColorDarkMode = Color(0xFF202020);
   static Color shadowColorDarkMode = const Color(0xFF000000).withOpacity(0.025);

@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   animations: ^2.0.2
+  app_review: ^2.1.2+1
   cloud_firestore: ^3.4.6
   cloud_functions: ^3.3.3
   cupertino_icons: ^1.0.2
@@ -20,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.5+1
+  flutter_native_splash: ^2.2.9
   flutter_svg: ^1.0.3
   flutter_switch: ^0.3.2
   flutterfire_ui: ^0.4.3+4
@@ -28,17 +30,22 @@ dependencies:
   logger: ^1.1.0
   modal_bottom_sheet: ^2.1.0
   package_info_plus: ^1.4.3+1
+  permission_handler: ^10.0.1
   rich_text_controller: ^1.4.0
   sliding_up_panel: ^2.0.0+1
+  url_launcher: ^6.1.5
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.10.0"
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
 
 flutter:
   assets:
-    - assets/
+    - assets/fonts/
+    - assets/icons/
+    - assets/logos/
 
   uses-material-design: true
 
@@ -71,3 +78,18 @@ flutter:
     - family: Black
       fonts:
         - asset: assets/fonts/Gilroy-Black.ttf
+
+# Icon (generated)
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/markbase-app-icon.png"
+
+# Splash screen (generated)
+flutter_native_splash:
+  color: "#ffffff"
+  background_image: "assets/logos/markbase-full-logo-light.png"
+
+  color_dark: "#000000"
+  background_image_dark: "assets/logos/markbase-full-logo-dark.png"

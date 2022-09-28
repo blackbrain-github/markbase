@@ -9,7 +9,14 @@ class Screen extends HookWidget {
   final Widget child;
   final String? title;
   final Color? backgroundColor;
-  const Screen({required this.child, this.title, this.backgroundColor, Key? key}) : super(key: key);
+  final Color? titleColor;
+  const Screen({
+    required this.child,
+    this.title,
+    this.backgroundColor,
+    this.titleColor,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,7 @@ class Screen extends HookWidget {
           backgroundColor: backgroundColor ?? AppColors.getPrimaryBackgroundColor(),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -28,6 +35,7 @@ class Screen extends HookWidget {
                     CustomText(
                       title!,
                       size: 22,
+                      customColor: titleColor,
                       color: TextColorType.primary,
                       fontWeight: FontWeight.w700,
                       textAlign: TextAlign.start,

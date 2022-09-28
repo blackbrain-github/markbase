@@ -32,6 +32,8 @@ class FirebaseAuthService {
         //now link these credentials with the existing user
         UserCredential userCredential = await _auth.signInWithCredential(_credential);
 
+        CommonLogic.isLoggedIn.set(true, notify: false);
+
         return userCredential;
       } else {
         throw _error("Failed signing in with Google");
@@ -50,10 +52,10 @@ class FirebaseAuthService {
         password: password,
       );
 
-      CommonLogic.isLoggedIn.set(true);
+      CommonLogic.isLoggedIn.set(true, notify: false);
 
       return _credential;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       /*
         A [FirebaseAuthException] maybe thrown with the following error code:
 
@@ -79,8 +81,11 @@ class FirebaseAuthService {
         email: email,
         password: password,
       );
+
+      CommonLogic.isLoggedIn.set(true, notify: false);
+
       return userCredential;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       /*
         A [FirebaseAuthException] maybe thrown with the following error code:
 
@@ -93,9 +98,6 @@ class FirebaseAuthService {
         *wrong-password:
         Thrown if the password is invalid for the given email, or the account corresponding to the email does not have a password set. 
       */
-      if (e == "email-already-in-use") {
-        //
-      }
       rethrow;
     } catch (e) {
       throw _error("Error signing in with email");
@@ -106,6 +108,7 @@ class FirebaseAuthService {
   static Future<void> signOut() async {
     try {
       await _auth.signOut();
+      CommonLogic.isLoggedIn.set(false, notify: false);
     } catch (e) {
       throw _error("Failed signing out");
     }

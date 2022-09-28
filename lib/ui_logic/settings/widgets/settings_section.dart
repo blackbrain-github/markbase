@@ -8,7 +8,7 @@ class SettingsSection extends HookWidget {
   final String title;
   final List<Setting> settings;
   final double settingSpacing;
-  const SettingsSection({required this.title, required this.settings, this.settingSpacing = 15, Key? key}) : super(key: key);
+  const SettingsSection({required this.title, required this.settings, this.settingSpacing = 0, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +18,9 @@ class SettingsSection extends HookWidget {
       children: [
         CustomText(
           title,
-          size: 22,
+          size: 20,
           fontWeight: FontWeight.w700,
         ),
-        const SizedBox(height: 10),
         ColumnWithSpacing(
           d: settingSpacing,
           crossAxisAlignment: CrossAxisAlignment.start,

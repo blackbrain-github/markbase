@@ -17,8 +17,7 @@ class NoteTextEditingController extends TextEditingController {
     final List<InlineSpan> children = [];
 
     TextStyle titleStyle = const TextStyle(
-      fontFamily: 'SemiBold',
-      fontSize: 20,
+      fontWeight: FontWeight.w600,
     );
 
     // Take title

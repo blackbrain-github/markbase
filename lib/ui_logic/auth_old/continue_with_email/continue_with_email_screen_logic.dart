@@ -2,18 +2,19 @@ import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/show.dart';
 import 'package:Markbase/dome/variable_notifier.dart';
 import 'package:Markbase/services/firebase_auth_service.dart';
+import 'package:Markbase/ui_logic/common/common_logic.dart';
 import 'package:Markbase/ui_logic/complete_profile/complete_profile_screen.dart';
 import 'package:Markbase/ui_logic/master.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class EmailAuthScreenLogic {
+class ContinueWithEmailLogic {
   final BuildContext context;
   final VariableNotifier<String?> email;
   final VariableNotifier<String?> password;
   final VariableNotifier<EnterEmailScreenState> state; // 'unknown' or 'login' or 'signup'
 
-  EmailAuthScreenLogic(
+  ContinueWithEmailLogic(
     this.context, {
     required this.email,
     required this.password,
@@ -67,14 +68,14 @@ class EmailAuthScreenLogic {
 
           if (email.get != null && password.get != null) {
             await logIn(email: email.get!, password: password.get!);
-            Navigate(context).to(Master());
+            Navigate(context).to(const Master());
           }
         } else if (signInMethods.isEmpty) {
           state.set(EnterEmailScreenState.signup);
 
           if (email.get != null && password.get != null) {
             await signUp();
-            Navigate(context).to(CompleteProfileScreen());
+            Navigate(context).to(const CompleteProfileScreen());
           }
         } else if (signInMethods.contains('google.com')) {
           // logic.promptGoogleSignIn
@@ -89,6 +90,7 @@ class EmailAuthScreenLogic {
   Future<void> logIn({required String email, required String password}) async {
     try {
       await FirebaseAuthService.signInWithEmail(email: email, password: password);
+      await CommonLogic.getAppUser();
     } catch (e) {
       Show(context).errorMessage();
     }
@@ -103,6 +105,7 @@ class EmailAuthScreenLogic {
         password: password.get!,
       );
 
+      await CommonLogic.getAppUser();
       await FirebaseAuth.instance.currentUser?.sendEmailVerification();
     } on FirebaseException catch (e) {
       switch (e.code) {

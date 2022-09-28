@@ -15,6 +15,7 @@ class ImportantButton extends HookWidget {
   final bool disabled;
   final bool isAsync;
   final bool big;
+  final bool maxRoundedCorners;
 
   const ImportantButton({
     required this.onPressed,
@@ -23,6 +24,7 @@ class ImportantButton extends HookWidget {
     this.disabled = false,
     this.isAsync = false,
     this.big = false,
+    this.maxRoundedCorners = false,
   });
 
   @override
@@ -35,12 +37,16 @@ class ImportantButton extends HookWidget {
         },
         isAsync: isAsync,
         child: Container(
-          height: big ? 36 : 30,
-          padding: const EdgeInsets.fromLTRB(12, 7, 12, 7),
+          height: big ? 40 : 34,
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: selected ? AppColors.selectedButtonColor : AppColors.getUnselectedButtonColor(),
-            borderRadius: BorderRadius.circular(big ? 15 : 12),
+            borderRadius: BorderRadius.circular(maxRoundedCorners
+                ? 100
+                : big
+                    ? 15
+                    : 12),
           ),
           child: CustomText(
             title,
@@ -52,12 +58,16 @@ class ImportantButton extends HookWidget {
         loadingWidget: Transform.scale(
           scale: 0.9,
           child: Container(
-            height: big ? 36 : 30,
+            height: big ? 40 : 34,
             padding: const EdgeInsets.fromLTRB(12, 7, 12, 7),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.getSecondaryBackgroundColor(),
-              borderRadius: BorderRadius.circular(big ? 15 : 12),
+              borderRadius: BorderRadius.circular(maxRoundedCorners
+                  ? 100
+                  : big
+                      ? 15
+                      : 12),
             ),
             child: const MarkbaseLoadingWidget(small: true),
           ),

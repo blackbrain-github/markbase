@@ -1,12 +1,10 @@
 import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/show.dart';
-import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/note.dart';
 import 'package:Markbase/services/database.dart';
 import 'package:Markbase/ui_logic/common/widgets/column_with_spacing.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
-import 'package:Markbase/ui_logic/common/widgets/loading.dart';
 import 'package:Markbase/ui_logic/common/widgets/note_widget.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/note/note_screen.dart';
@@ -32,12 +30,12 @@ class Notes extends HookWidget {
               onPressed: () async {
                 try {
                   Note newNote = await Database.create.note(
-                    logic.currentCollection.get.parentPath ?? '',
+                    logic.currentCollection.get.path,
                     logic.currentCollection.get.id ?? '',
                   );
-                  List<Note> notes = logic.currentCollectionNotes.get;
+                  List<Note> notes = logic.currentCollection.get.notes ?? [];
                   notes.add(newNote);
-                  logic.currentCollectionNotes.set(notes);
+                  logic.currentCollection.set(logic.currentCollection.get..notes = notes);
                   var r = await Navigate(context).to(NoteScreen(newNote));
                 } catch (e) {
                   Show(context).errorMessage(message: e.toString());
@@ -53,37 +51,25 @@ class Notes extends HookWidget {
           ],
         ),
         const SizedBox(height: 5),
-        Listen(
-          to: logic.currentCollectionNotes,
-          builder: (List<Note> notes) {
-            return Listen(
-              to: logic.notesLoading,
-              builder: (bool loading) {
-                return loading
-                    ? const MarkbaseLoadingWidget()
-                    : logic.currentCollectionNotes.get.isNotEmpty
-                        ? ColumnWithSpacing(
-                            d: 5,
-                            children: List.generate(
-                              notes.length,
-                              (index) => NoteWidget(notes.elementAt(index)),
-                            ),
-                          )
-                        : const SizedBox(
-                            height: 30,
-                            child: Center(
-                              child: CustomText(
-                                "No notes",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                color: TextColorType.secondary,
-                              ),
-                            ),
-                          );
-              },
-            );
-          },
-        ),
+        (logic.currentCollection.get.collections?.isNotEmpty ?? false)
+            ? ColumnWithSpacing(
+                d: 7,
+                children: List.generate(
+                  logic.currentCollection.get.notes?.length ?? 0,
+                  (index) => NoteWidget(logic.currentCollection.get.notes!.elementAt(index)),
+                ),
+              )
+            : const SizedBox(
+                height: 30,
+                child: Center(
+                  child: CustomText(
+                    "No notes",
+                    size: 16,
+                    fontWeight: FontWeight.w600,
+                    color: TextColorType.secondary,
+                  ),
+                ),
+              ),
       ],
     );
   }

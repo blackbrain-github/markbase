@@ -5,7 +5,6 @@ import 'package:Markbase/ui_logic/common/widgets/collection_widget.dart';
 import 'package:Markbase/ui_logic/common/widgets/column_with_spacing.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
-import 'package:Markbase/ui_logic/common/widgets/loading.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/database/widgets/new_collection_form/new_collection_form.dart';
 import 'package:flutter/material.dart';
@@ -46,39 +45,33 @@ class Collections extends HookWidget {
         ),
         const SizedBox(height: 5),
         Listen(
-          to: logic.currentCollectionCollections,
-          builder: (List<Collection> collections) {
-            return Listen(
-              to: logic.collectionsLoading,
-              builder: (bool loading) {
-                return loading
-                    ? const MarkbaseLoadingWidget()
-                    : logic.currentCollectionCollections.get.isNotEmpty
-                        ? ColumnWithSpacing(
-                            d: 5,
-                            children: List.generate(
-                              collections.length,
-                              (index) => CollectionWidget(
-                                collections.elementAt(index),
-                                onPressed: () {
-                                  logic.goToCollection(collections[index]);
-                                },
-                              ),
-                            ),
-                          )
-                        : const SizedBox(
-                            height: 30,
-                            child: Center(
-                              child: CustomText(
-                                "No collections",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                color: TextColorType.secondary,
-                              ),
-                            ),
-                          );
-              },
-            );
+          to: logic.currentCollection,
+          builder: (Collection currentCollection) {
+            print("Current collection collectionCount: ${currentCollection.collections?.length}");
+            return (currentCollection.collections?.isNotEmpty ?? false)
+                ? ColumnWithSpacing(
+                    d: 5,
+                    children: List.generate(
+                      currentCollection.collections?.length ?? 0,
+                      (index) => CollectionWidget(
+                        currentCollection.collections!.elementAt(index),
+                        onPressed: () {
+                          logic.goToCollection(currentCollection.collections![index]);
+                        },
+                      ),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: CustomText(
+                        "No collections",
+                        size: 16,
+                        fontWeight: FontWeight.w600,
+                        color: TextColorType.secondary,
+                      ),
+                    ),
+                  );
           },
         )
       ],

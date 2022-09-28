@@ -74,10 +74,10 @@ class Get extends Database {
   }
 
   /// Path given in 'collection/collection' format, not '/collection/collection'
-  Future<List<Note>> notes(String path) async {
+  Future<List<Note>> notes(String inCollectionPath) async {
     return _isAuthenticated()
         ? _isAuthenticated()
-            ? await _notesRef().where('parentPath', isEqualTo: path).get().then(
+            ? await _notesRef().where('inCollectionPath', isEqualTo: inCollectionPath).get().then(
                 (snapshot) {
                   return Note.manyFromSnapshot(snapshot);
                 },
@@ -161,12 +161,12 @@ class Create extends Database {
     }
   }
 
-  Future<Note> note(String parentPath, String collectionId) async {
+  Future<Note> note(String inCollectionPath, String collectionId) async {
     return _isAuthenticated()
         ? await _notesRef()
             .add({
               'body': '',
-              'parentPath': parentPath,
+              'inCollectionPath': inCollectionPath,
               'lastEdited': FieldValue.serverTimestamp(),
             })
             .catchError((e) => throw _error('POST', 'data', e))
@@ -291,8 +291,8 @@ class Delete extends Database {
 
       QuerySnapshot<Map<String, dynamic>> inCollection = await _collectionsRef()
           .where(
-            'parentPath',
-            isEqualTo: note.parentPath,
+            'inCollectionPath',
+            isEqualTo: note.inCollectionPath,
           )
           .get();
 

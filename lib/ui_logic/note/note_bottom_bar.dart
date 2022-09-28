@@ -14,8 +14,9 @@ class NoteBottomBar extends HookWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewPadding.bottom),
+      color: AppColors.getNoteColor(),
       child: Container(
-        height: 50,
+        height: 55,
         decoration: BoxDecoration(
           color: AppColors.getNoteColor(),
           boxShadow: [
@@ -78,7 +79,7 @@ class NoteBottomBar extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CustomText(
-                              note.parentPath.replaceAll(note.title, "") + '/',
+                              note.inCollectionPath.replaceAll(note.title, "") + '/',
                               color: TextColorType.secondary,
                               fontWeight: FontWeight.w600,
                               maxLines: 1,

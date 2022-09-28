@@ -1,7 +1,6 @@
 import 'package:Markbase/dome/variable_notifier.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/collection.dart';
-import 'package:Markbase/models/note.dart';
 import 'package:Markbase/ui_logic/common/app.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/database/widgets/bottom_bar.dart';
@@ -19,16 +18,11 @@ class DatabaseScreen extends HookWidget {
 
     DatabaseScreenLogic logic = DatabaseScreenLogic(
       context,
-      currentCollection: VariableNotifier<Collection>(Collection.empty()),
-      currentCollectionCollections: VariableNotifier<List<Collection>>([]),
-      currentCollectionNotes: VariableNotifier<List<Note>>([]),
-      collectionsLoading: VariableNotifier<bool>(false),
-      notesLoading: VariableNotifier<bool>(false),
+      currentCollection: VariableNotifier<Collection>(Collection.root()),
     );
 
     useEffect(() {
-      logic.loadRootCachedCollectionsAndNotes();
-      logic.loadRootCollectionsAndNotes();
+      logic.init();
       return null;
     });
 
@@ -45,7 +39,7 @@ class DatabaseScreen extends HookWidget {
                 removeTop: true,
                 child: Listen(
                   to: logic.currentCollection,
-                  builder: (value) {
+                  builder: (Collection collection) {
                     return ListView(
                       children: [
                         Collections(logic),

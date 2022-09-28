@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomAnimatedWidget extends StatefulWidget {
   final Function onPressed;
   final Function? onLongPress;
-  final Function? onDoupleTap;
+  final Function? onDoubleTap;
   final Widget child;
   final double endSize;
   final Function? onTapDown;
@@ -16,7 +16,7 @@ class CustomAnimatedWidget extends StatefulWidget {
   const CustomAnimatedWidget({
     required this.onPressed,
     this.onLongPress,
-    this.onDoupleTap,
+    this.onDoubleTap,
     required this.child,
     this.endSize = 0.975,
     this.isAsync,
@@ -138,8 +138,9 @@ class _CustomAnimatedWidgetState extends State<CustomAnimatedWidget> with Ticker
                               }
                             }
                           : null,
-                      onDoubleTap: (widget.onDoupleTap != null) ? () {} : null,
+                      onDoubleTap: (widget.onDoubleTap != null) ? () {} : null,
                       child: Stack(
+                        clipBehavior: Clip.none,
                         alignment: Alignment.center,
                         children: [
                           if (widget.isAsync != null)

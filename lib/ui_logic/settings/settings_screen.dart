@@ -1,6 +1,9 @@
+import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/ui_logic/common/widgets/column_with_spacing.dart';
 import 'package:Markbase/ui_logic/common/widgets/screen.dart';
+import 'package:Markbase/ui_logic/settings/setting_screens/theme_screen.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen_logic.dart';
+import 'package:Markbase/ui_logic/settings/widgets/account_details_mini_view.dart';
 import 'package:Markbase/ui_logic/settings/widgets/markbase_details.dart';
 import 'package:Markbase/ui_logic/settings/widgets/setting.dart';
 import 'package:Markbase/ui_logic/settings/widgets/settings_section.dart';
@@ -15,61 +18,26 @@ class SettingsScreen extends HookWidget {
     SettingsScreenLogic logic = SettingsScreenLogic();
 
     return Screen(
+      title: 'Settings',
       child: SingleChildScrollView(
         child: ColumnWithSpacing(
-          d: 30,
+          d: 40,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AccountDetailsMiniView(logic),
             SettingsSection(
               title: 'Look',
-              settings: [
-                Setting(
-                  type: SettingType.option,
-                  title: 'Theme',
-                  options: const ['Light', 'Dark'],
-                  selectedOption: logic.theme.characters.first.toUpperCase() + logic.theme.substring(1),
-                  onTap: (theme) => logic.changeTheme(theme),
-                ),
-                Setting(
-                  type: SettingType.option,
-                  title: 'Database look',
-                  options: const ['Markbase', 'Tree'],
-                  selectedOption: 'Markbase',
-                  onTap: (databaseLook) => logic.changeDatabaseLook(databaseLook),
-                ),
-                Setting(
-                  type: SettingType.option,
-                  title: 'Initial view',
-                  options: const ['Home', 'Database'],
-                  selectedOption: 'Home',
-                  onTap: (initialView) => logic.changeInitialView(initialView),
-                ),
-              ],
-            ),
-            SettingsSection(
-              title: 'Account',
-              settingSpacing: 10,
+              settingSpacing: 0,
               settings: [
                 Setting(
                   type: SettingType.action,
-                  title: 'see account details',
-                  action: () => logic.seeAccountDetails(context),
-                ),
-                Setting(
-                  type: SettingType.action,
-                  title: 'switch account',
-                  action: () => logic.switchAccount(),
-                ),
-                Setting(
-                  type: SettingType.action,
-                  title: 'log out',
-                  action: () => logic.logOut(context),
+                  title: 'theme',
+                  action: () => Navigate(context).to(ThemeScreen(logic)), // logic.suggestANewFeature(),
                 ),
               ],
             ),
             SettingsSection(
               title: 'Need help with something?',
-              settingSpacing: 10,
               settings: [
                 Setting(
                   type: SettingType.action,
@@ -80,7 +48,6 @@ class SettingsScreen extends HookWidget {
             ),
             SettingsSection(
               title: 'Help make Markbase better',
-              settingSpacing: 10,
               settings: [
                 Setting(
                   type: SettingType.action,

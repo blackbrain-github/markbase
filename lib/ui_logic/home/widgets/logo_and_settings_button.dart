@@ -21,13 +21,14 @@ class LogoAndSettingsButton extends HookWidget {
           children: [
             RichText(
               text: TextSpan(
-                style: const TextStyle(fontSize: 26, color: Colors.black, fontFamily: 'ExtraBold'),
+                style: const TextStyle(fontSize: 30, color: Colors.black, fontFamily: 'ExtraBold'),
                 children: <TextSpan>[
                   TextSpan(
-                      text: 'Markbase',
-                      style: TextStyle(
-                        color: AppColors.getPrimaryTextColor(),
-                      )),
+                    text: 'Markbase',
+                    style: TextStyle(
+                      color: AppColors.getPrimaryTextColor(),
+                    ),
+                  ),
                   const TextSpan(
                     text: '.',
                     style: TextStyle(

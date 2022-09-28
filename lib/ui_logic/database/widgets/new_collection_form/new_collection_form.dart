@@ -1,8 +1,9 @@
+import 'package:Markbase/ui_logic/common/app.dart';
+import 'package:Markbase/ui_logic/common/widgets/buttons/important_button.dart';
 import 'package:Markbase/ui_logic/common/widgets/content_spacer.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
+import 'package:Markbase/ui_logic/common/widgets/custom_text_field.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
-import 'package:Markbase/ui_logic/database/widgets/new_collection_form/widgets/done_button.dart';
-import 'package:Markbase/ui_logic/database/widgets/new_collection_form/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -15,10 +16,14 @@ class NewCollectionPopup extends HookWidget {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.fromLTRB(10, 0, 10, MediaQuery.of(context).viewInsets.bottom + 10),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.getPrimaryBackgroundColor(),
           borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.2),
+            width: 0.5,
+          ),
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
@@ -36,9 +41,21 @@ class NewCollectionPopup extends HookWidget {
               fontWeight: FontWeight.w700,
             ),
             const VerticalSpacer(),
-            CollectionNameTextField(logic),
+            CustomTextField(
+              title: 'Name collection',
+              validator: () {},
+              onSaved: () {},
+              onChanged: (s) {
+                print('thigs');
+                logic.newCollectionTitle = s;
+              },
+            ),
             const VerticalSpacer(),
-            DoneButton(logic),
+            ImportantButton(
+              onPressed: () async => logic.createNewCollection(),
+              title: "Done",
+              isAsync: true,
+            ),
           ],
         ),
       ),

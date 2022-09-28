@@ -4,7 +4,6 @@ import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/note.dart';
 import 'package:Markbase/ui_logic/common/app.dart';
 import 'package:Markbase/ui_logic/common/common_logic.dart';
-import 'package:Markbase/ui_logic/common/widgets/content_spacer.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
 import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/note/note_screen.dart';
@@ -60,16 +59,16 @@ class _NoteWidgetState extends State<NoteWidget> with AutomaticKeepAliveClientMi
         onLongPress: () => Show(context).deleteNote(widget.note),
         endSize: 0.99,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
           child: Container(
             padding: const EdgeInsets.all(10),
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppColors.getNoteColor(),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
               border: Border.all(
                 width: 0.5,
-                color: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.1),
+                color: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.05),
               ),
               boxShadow: [
                 BoxShadow(
@@ -83,14 +82,13 @@ class _NoteWidgetState extends State<NoteWidget> with AutomaticKeepAliveClientMi
               children: [
                 CustomText(
                   title != "" ? title : "Untitled note",
-                  size: 18,
+                  size: 16,
                   fontWeight: FontWeight.w700,
                   softWrap: true,
                   color: TextColorType.primary,
                   maxLines: 3,
                   textAlign: TextAlign.start,
                 ),
-                if (body != "") const VerticalSpacer(d: 5),
                 if (body != "")
                   CustomText(
                     body,

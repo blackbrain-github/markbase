@@ -6,42 +6,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PageButtons extends HookWidget {
-  final HomeScreenLogic homeScreenLogic;
-  const PageButtons(this.homeScreenLogic, {Key? key}) : super(key: key);
+  final HomeScreenLogic logic;
+  const PageButtons(this.logic, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Listen(
-      to: homeScreenLogic.tab,
-      builder: (String tab) => Row(
-        children: [
-          ImportantButton(
-            onPressed: () {
-              if (homeScreenLogic.pageController.positions.isNotEmpty) {
-                if (homeScreenLogic.pageController.page == 1.0) {
-                  homeScreenLogic.pageController.jumpToPage(0);
-                  homeScreenLogic.tab.set("home");
+      to: logic.tab,
+      builder: (String tab) {
+        print("Tab: " + tab);
+        return Row(
+          children: [
+            ImportantButton(
+              onPressed: () {
+                if (logic.pageController.positions.isNotEmpty) {
+                  if (logic.pageController.page == 1.0) {
+                    logic.pageController.jumpToPage(0);
+                    logic.tab.set("home");
+                  }
                 }
-              }
-            },
-            title: 'Home',
-            selected: tab == 'home',
-          ),
-          const HorizontalSpacer(d: 5),
-          ImportantButton(
-            onPressed: () {
-              if (homeScreenLogic.pageController.positions.isNotEmpty) {
-                if (homeScreenLogic.pageController.page == 0.0) {
-                  homeScreenLogic.pageController.jumpToPage(1);
-                  homeScreenLogic.tab.set("database");
+              },
+              title: 'Home',
+              selected: tab == 'home',
+              maxRoundedCorners: true,
+            ),
+            const HorizontalSpacer(d: 5),
+            ImportantButton(
+              onPressed: () {
+                if (logic.pageController.positions.isNotEmpty) {
+                  if (logic.pageController.page == 0.0) {
+                    logic.pageController.jumpToPage(1);
+                    logic.tab.set("database");
+                  }
                 }
-              }
-            },
-            title: 'Database',
-            selected: tab == 'database',
-          ),
-        ],
-      ),
+              },
+              title: 'Database',
+              selected: tab == 'database',
+              maxRoundedCorners: true,
+            ),
+          ],
+        );
+      },
     );
   }
 }

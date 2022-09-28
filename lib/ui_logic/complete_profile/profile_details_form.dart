@@ -1,5 +1,5 @@
 import 'package:Markbase/dome/widgets/listen.dart';
-import 'package:Markbase/ui_logic/auth/widgets/auth_screen_button.dart';
+import 'package:Markbase/ui_logic/auth_old/widgets/auth_screen_button.dart';
 import 'package:Markbase/ui_logic/complete_profile/complete_profile_screen_logic.dart';
 import 'package:Markbase/ui_logic/complete_profile/upload_profile_image_button.dart';
 import 'package:Markbase/ui_logic/complete_profile/username_field.dart';
