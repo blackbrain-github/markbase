@@ -1,4 +1,4 @@
-package io.markbase.markbase;
+package se.markba.markbase;
 
 import io.flutter.embedding.android.FlutterActivity;
 

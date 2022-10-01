@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:431481614037:android:8def2eb59a5ab2dd4f7c5c",
+        "mobilesdk_app_id": "1:431481614037:android:9070beb3290f4ec84f7c5c",
         "android_client_info": {
-          "package_name": "io.markbase.markbase"
+          "package_name": "se.markba.markbase"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "431481614037-jtb14p10ga3e7aq2u19a40ldkrs1q3rl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "se.markba.markbase",
+            "certificate_hash": "ef3fd9b74e02be6075806667fc1c03b6183fef1c"
+          }
+        },
         {
           "client_id": "431481614037-845jacp4j0b7qe4852hjtjq49idmanoa.apps.googleusercontent.com",
           "client_type": 3
