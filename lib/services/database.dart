@@ -138,7 +138,7 @@ class Create extends Database {
       registerBatch.set(
         _usersRef().doc(FirebaseAuth.instance.currentUser!.uid),
         {
-          'createdAt': FieldValue.serverTimestamp(), // Adds timestamp in server when created
+          'createdAt': FieldValue.serverTimestamp(),
           'id': FirebaseAuth.instance.currentUser!.uid,
           'username': username.toLowerCase(),
           'email': FirebaseAuth.instance.currentUser!.email,
@@ -230,11 +230,9 @@ class Modify extends Database {
             (_) {},
           )
           .catchError((e) {
-        print(e);
         throw _error("MODIFY", "User profile photo", e);
       });
     }).catchError((e) {
-      print(e);
       throw _error("MODIFY", "User profile photo", e);
     });
   }

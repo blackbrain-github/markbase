@@ -24,7 +24,6 @@ class AccountDetailsMiniView extends HookWidget {
           child: StreamBuilder(
             stream: Database.get.userAsStream(),
             builder: (context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> doc) {
-              print('updated');
               if (doc.data != null) {
                 UserModel userModel = UserModel.fromMap(doc.data!.data()!);
                 return Container(

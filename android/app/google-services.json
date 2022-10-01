@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "98181303289",
+    "project_id": "markbase-by-blackbrain",
+    "storage_bucket": "markbase-by-blackbrain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98181303289:android:1a75d3e61d87a14fd94b28",
+        "android_client_info": {
+          "package_name": "se.markba.markbase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98181303289-kbg9dhcnr5cbm4hues1j4ig1csfj6qt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUUMjiZqLbi8-pXdugoouyoeuRwf2XWa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98181303289-kbg9dhcnr5cbm4hues1j4ig1csfj6qt6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "98181303289-955a2jj1kr9kq8c77j9qls8ffhoi1mrf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.markba.markbase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

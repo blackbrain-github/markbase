@@ -30,10 +30,6 @@ class Get {
     var cachedNotesForPath = AppVariables.appState.read('notes($path)');
     var expiryInformation = AppVariables.appState.read('notes($path){expiryInformation}');
 
-    print('Getting cached notes');
-    print('path $path');
-    print('notes($path)');
-
     if (cachedNotesForPath != null) {
       List<Note> _notes = [];
       for (var i = 0; i < cachedNotesForPath.length; i++) {
@@ -65,10 +61,7 @@ class Cache {
     // Example: if path = '/Notes', it will point to notes inside this path
 
     List<Map<String, dynamic>> notesAsMap = [];
-    print("caching notes");
-    print(notesToCache);
     for (var i = 0; i < notesToCache.length; i++) {
-      print(notesToCache[i].toMap());
       notesAsMap.add(notesToCache[i].toMap());
     }
     await AppVariables.appState.write('notes($path)', notesAsMap);

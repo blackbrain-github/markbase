@@ -46,11 +46,9 @@ class MainLogic {
     if (AppVariables.appState.read('theme') == 'system' || AppVariables.appState.read('theme') == null) {
       var systemBrightness = SchedulerBinding.instance.window.platformBrightness;
       if (systemBrightness == Brightness.dark) {
-        print('System is in dark mode');
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
         CommonLogic.theme.set(Theme.dark);
       } else if (systemBrightness == Brightness.light) {
-        print('System is in light mode');
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
         CommonLogic.theme.set(Theme.light);
       }

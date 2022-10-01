@@ -26,6 +26,7 @@ import 'package:Markbase/main_logic.dart';
 import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/master.dart';
 import 'package:Markbase/update_required.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -43,6 +44,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseAppCheck.instance.activate();
 
   // Initialize Firebase Remote Config
   await FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(

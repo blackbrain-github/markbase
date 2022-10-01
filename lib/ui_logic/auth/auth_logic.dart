@@ -19,14 +19,11 @@ class AuthLogic {
       //await FirebaseAnalytics.instance.logLogin(loginMethod: "google");
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         // New user
-        print("ssdd");
-        print(FirebaseAuth.instance.currentUser?.uid);
         Navigate(context).to(SignInScreenCompleteProfile(this));
       } else {
         try {
           await FirebaseAuth.instance.currentUser?.reload();
           var r = await Database.get.user();
-          print(r.email);
           CommonLogic.appUser.set(r);
           Navigate(context).to(const Master(), ableToGoBack: false);
         } catch (e) {

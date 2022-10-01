@@ -82,7 +82,6 @@ class _SignInScreenCompleteProfileState extends State<SignInScreenCompleteProfil
                 CommonLogic.appUser.set(await Database.get.user());
                 Navigate(context).to(const Master());
               } catch (e) {
-                print(e);
                 setState(() {
                   errorMessage = 'Something went wrong';
                 });

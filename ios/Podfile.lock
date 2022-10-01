@@ -641,12 +641,20 @@ PODS:
   - Firebase/Functions (9.4.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 9.4.0)
+  - Firebase/Performance (9.4.0):
+    - Firebase/CoreOnly
+    - FirebasePerformance (~> 9.4.0)
   - Firebase/RemoteConfig (9.4.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 9.4.0)
   - Firebase/Storage (9.4.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 9.4.0)
+  - firebase_app_check (0.0.8):
+    - Firebase/CoreOnly (~> 9.4.0)
+    - firebase_core
+    - FirebaseAppCheck (~> 9.4.0-beta)
+    - Flutter
   - firebase_auth (3.6.2):
     - Firebase/Auth (= 9.4.0)
     - firebase_core
@@ -662,6 +670,10 @@ PODS:
     - Firebase/DynamicLinks (= 9.4.0)
     - firebase_core
     - Flutter
+  - firebase_performance (0.8.3-2):
+    - Firebase/Performance (= 9.4.0)
+    - firebase_core
+    - Flutter
   - firebase_remote_config (2.0.16):
     - Firebase/RemoteConfig (= 9.4.0)
     - firebase_core
@@ -672,6 +684,10 @@ PODS:
     - Flutter
   - FirebaseABTesting (9.6.0):
     - FirebaseCore (~> 9.0)
+  - FirebaseAppCheck (9.4.0):
+    - FirebaseCore (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.7)
+    - PromisesObjC (~> 2.1)
   - FirebaseAppCheckInterop (9.6.0)
   - FirebaseAuth (9.4.0):
     - FirebaseCore (~> 9.0)
@@ -725,6 +741,15 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (~> 2.1)
   - FirebaseMessagingInterop (9.6.0)
+  - FirebasePerformance (9.4.0):
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - FirebaseRemoteConfig (~> 9.0)
+    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
+    - GoogleUtilities/Environment (~> 7.7)
+    - GoogleUtilities/ISASwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseRemoteConfig (9.4.0):
     - FirebaseABTesting (~> 9.0)
     - FirebaseCore (~> 9.0)
@@ -767,8 +792,11 @@ PODS:
     - GoogleUtilities/Network
   - GoogleUtilities/Environment (7.8.0):
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/ISASwizzler (7.8.0)
   - GoogleUtilities/Logger (7.8.0):
     - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (7.8.0):
+    - GoogleUtilities/Logger
   - GoogleUtilities/Network (7.8.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
@@ -866,10 +894,12 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
+  - firebase_app_check (from `.symlinks/plugins/firebase_app_check/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
+  - firebase_performance (from `.symlinks/plugins/firebase_performance/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
@@ -897,6 +927,7 @@ SPEC REPOS:
     - FBSDKLoginKit
     - Firebase
     - FirebaseABTesting
+    - FirebaseAppCheck
     - FirebaseAppCheckInterop
     - FirebaseAuth
     - FirebaseAuthInterop
@@ -910,6 +941,7 @@ SPEC REPOS:
     - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseMessagingInterop
+    - FirebasePerformance
     - FirebaseRemoteConfig
     - FirebaseSharedSwift
     - FirebaseStorage
@@ -931,6 +963,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
     :path: ".symlinks/plugins/cloud_functions/ios"
+  firebase_app_check:
+    :path: ".symlinks/plugins/firebase_app_check/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -939,6 +973,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_database/ios"
   firebase_dynamic_links:
     :path: ".symlinks/plugins/firebase_dynamic_links/ios"
+  firebase_performance:
+    :path: ".symlinks/plugins/firebase_performance/ios"
   firebase_remote_config:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   firebase_storage:
@@ -981,13 +1017,16 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 96ec2ddb67a032e54f0754ea3d59db6f84f42389
   FBSDKLoginKit: 66ff4ddf372d9c3fc360e65ae048a47a482c29b9
   Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
+  firebase_app_check: 7a4e7596d56a2eb1492878df195d74cece20480c
   firebase_auth: 52e602836044f27539b5ba127cf64c38354d44a2
   firebase_core: 8e500850dd138c269d197c8dfca3ae886fa3b6f2
   firebase_database: ae01b8b2e4a4631b7d624cb1b57b16ec90a9efce
   firebase_dynamic_links: 3ce9f9339d7f350c72d3c269d0581dc3d9ca7b81
+  firebase_performance: 6838df80bb5c609c976cda081f8fa24a3cf199ac
   firebase_remote_config: 0122ca8cf8aef19eb8666ad4aa8d0f811b619762
   firebase_storage: 7ded4c7f9dca5b3140ea681c6390180ed2d81fa4
   FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
+  FirebaseAppCheck: aaacc3c6beaba35564344c694608e272bd9e9cb1
   FirebaseAppCheckInterop: d5ecda0c09f8069406643d6e0fa12c09d1b736e3
   FirebaseAuth: ae5d4402e1516497357d909162b091b3ca2a2e9c
   FirebaseAuthInterop: b6cf02117f13a8400c8c8b4421e12c6e850bcaf3
@@ -1001,6 +1040,7 @@ SPEC CHECKSUMS:
   FirebaseFunctions: cea54b689fb87b59b692989c0a5472c36df98aa1
   FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
   FirebaseMessagingInterop: 348785028509e1a5a9af277123e7fc08b2d17306
+  FirebasePerformance: 89697044484c366e9b3214163e10034a4b42353b
   FirebaseRemoteConfig: 6d9982bc64548a6e3c1b497b9fa53938ad135f2d
   FirebaseSharedSwift: 2269c2ddc7a5efb7fb5f3f3177e790613b52dfda
   FirebaseStorage: 160ba975dd3452d9c59a3bf5ea9bf70ff96bd3c2

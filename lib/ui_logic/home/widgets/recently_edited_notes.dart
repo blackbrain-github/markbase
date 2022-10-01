@@ -68,7 +68,7 @@ class _RecentlyEditedNotesState extends State<RecentlyEditedNotes> {
                     color: TextColorType.secondary,
                   ),
                   const SizedBox(height: 10),
-                  Lottie.asset('assets/lottie/empty.json'),
+                  Center(child: Lottie.asset('assets/lottie/empty.json', width: MediaQuery.of(context).size.width * 0.7)),
                   const SizedBox(height: 15),
                   const Center(child: CustomText("It's so empty here...", color: TextColorType.secondary, fontWeight: FontWeight.w600)),
                 ],
