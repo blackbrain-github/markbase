@@ -10,9 +10,11 @@ dependencies:
   cloud_firestore: ^3.4.6
   cloud_functions: ^3.3.3
   cupertino_icons: ^1.0.2
+  firebase_analytics: ^9.3.7
   firebase_app_check: ^0.0.8
   firebase_auth: ^3.6.2
   firebase_core: ^1.21.1
+  firebase_crashlytics: ^2.8.12
   firebase_performance: ^0.8.3+2
   firebase_remote_config: ^2.0.16
   firebase_storage: ^10.3.4
@@ -43,7 +45,6 @@ flutter:
     - assets/icons/
     - assets/logos/
     - assets/lottie/
-    - .env
 
   uses-material-design: true
 

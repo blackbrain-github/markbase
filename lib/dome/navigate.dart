@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class Navigate {
@@ -7,6 +8,7 @@ class Navigate {
   /// Navigate to screen with push. Set 'ableToGoBack' to false if
   /// you want to prevent the user from going back to previous screen.
   Future<dynamic> to(Widget screen, {bool ableToGoBack = true}) async {
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: screen.runtimeType.toString());
     if (ableToGoBack) {
       var result = await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => screen),

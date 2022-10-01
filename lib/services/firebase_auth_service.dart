@@ -1,6 +1,7 @@
 // Packages
 import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -39,6 +40,9 @@ class FirebaseAuthService {
         throw _error("Failed signing in with Google");
       }
     } catch (e) {
+      print('object');
+      print(e);
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error continuing with Google'));
       throw _error("Failed signing in with Google");
     }
   }
@@ -64,6 +68,7 @@ class FirebaseAuthService {
       } else if (e.code == 'weak-password') {
         throw 'Something went wrong';
       }
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error signing up with email'));
       throw 'Something went wrong';
     }
   }
@@ -94,6 +99,7 @@ class FirebaseAuthService {
       */
       rethrow;
     } catch (e) {
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error signing in with email'));
       throw _error("Error signing in with email");
     }
   }
@@ -104,24 +110,33 @@ class FirebaseAuthService {
       await _auth.signOut();
       CommonLogic.isLoggedIn.set(false, notify: false);
     } catch (e) {
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error signing out'));
       throw _error("Failed signing out");
     }
   }
 
   // Reset password
   static Future<void> sendPasswordResetLink(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error sending password reset link'));
+    }
   }
 
   static Future<void> sendEmailConfirmation({UserCredential? userCredential}) async {
-    if (userCredential != null) {
-      userCredential.user?.sendEmailVerification();
-    } else {
-      if (FirebaseAuth.instance.currentUser != null) {
-        await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    try {
+      if (userCredential != null) {
+        userCredential.user?.sendEmailVerification();
       } else {
-        throw 'user-not-signed-in';
+        if (FirebaseAuth.instance.currentUser != null) {
+          await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        } else {
+          throw 'user-not-signed-in';
+        }
       }
+    } catch (e) {
+      FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error sending email verification'));
     }
   }
 }

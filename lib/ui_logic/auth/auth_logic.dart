@@ -34,6 +34,7 @@ class AuthLogic {
         }
       }
     } catch (e) {
+      print(e);
       Show(context).errorMessage(message: "Couldn't sign in with Google, try again later");
     }
   }
@@ -53,7 +54,7 @@ class AuthLogic {
   }
 
   Future<void> confirmEmailBeforeSigningUp(BuildContext context, {required String email, required String password}) async {
-    Navigate(context).to(SignUpScreenConfirmEmail(this, email: email, password: password), ableToGoBack: false);
+    Navigate(context).to(SignUpScreenConfirmEmail(this, email: email, password: password));
   }
 
   Future<void> createUserProfile(BuildContext context, String fullName, String username, File? profileImage) async {

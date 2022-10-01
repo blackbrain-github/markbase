@@ -26,9 +26,11 @@ import 'package:Markbase/main_logic.dart';
 import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/master.dart';
 import 'package:Markbase/update_required.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,6 +60,11 @@ void main() async {
   } catch (e) {
     // do something is configs are not able to be fetched?
   }
+
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\
 

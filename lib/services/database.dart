@@ -7,6 +7,7 @@ import 'package:Markbase/models/note.dart';
 import 'package:Markbase/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -27,10 +28,12 @@ class Database {
 
   // For properly displaying errors
   FlutterError _error(String operation, String data, dynamic e) {
+    FirebaseCrashlytics.instance.recordFlutterError(FlutterErrorDetails(exception: e));
     return FlutterError('Server error, $operation $data: $e');
   }
 
   FlutterError _authError() {
+    FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Auth error, user not authenticated in app'));
     return FlutterError('Auth error, user not authenticated in app');
   }
 
