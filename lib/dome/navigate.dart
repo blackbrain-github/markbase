@@ -13,10 +13,10 @@ class Navigate {
       );
       return result;
     } else {
-      var result = await Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => screen),
+        (route) => false,
       );
-      return result;
     }
   }
 

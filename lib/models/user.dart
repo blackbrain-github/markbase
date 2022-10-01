@@ -40,4 +40,19 @@ class UserModel {
       throw "Error trying to convert user from Firestore to UserModel";
     }
   }
+
+  static UserModel fromMap(Map<String, dynamic> map) {
+    try {
+      return UserModel(
+        createdAt: map["createdAt"] is String ? DateTime.parse(map["createdAt"]) : map["createdAt"].toDate(),
+        id: map["id"],
+        username: map["username"],
+        email: map["email"],
+        fullName: map["fullName"],
+        profileImageUrl: map["profileImageUrl"],
+      );
+    } catch (e) {
+      throw "Error trying to convert user from Firestore to UserModel";
+    }
+  }
 }

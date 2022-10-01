@@ -58,7 +58,6 @@
         "**/.project": true,
         "**/.settings": true,
         "analysis_options.yaml": true,
-        "android": true,
         "build": true,
         "markbase.iml": true,
         "pubspec.lock": true

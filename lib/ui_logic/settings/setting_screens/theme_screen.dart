@@ -1,5 +1,5 @@
-import 'package:Markbase/ui_logic/common/common_logic.dart';
-import 'package:Markbase/ui_logic/common/widgets/screen.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart';
+import 'package:Markbase/dome/widgets/screen.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen_logic.dart';
 import 'package:Markbase/ui_logic/settings/widgets/setting.dart';
 import 'package:flutter/material.dart';

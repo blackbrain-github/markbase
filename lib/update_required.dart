@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:Markbase/ui_logic/common/constants.dart';
-import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
-import 'package:Markbase/ui_logic/common/widgets/screen.dart';
+import 'package:Markbase/dome/widgets/screen.dart';
+import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -19,9 +19,9 @@ class UpdateRequired extends HookWidget {
 
     String getMinimumRequiredVersion() {
       if (Platform.isIOS) {
-        return FirebaseConstants.remoteConfig.getString('minimum_required_version_ios');
+        return FirebaseRemoteConfig.instance.getString('minimum_required_version_ios');
       } else {
-        return FirebaseConstants.remoteConfig.getString('minimum_required_version_android');
+        return FirebaseRemoteConfig.instance.getString('minimum_required_version_android');
       }
     }
 

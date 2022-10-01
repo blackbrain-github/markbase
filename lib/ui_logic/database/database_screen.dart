@@ -1,31 +1,34 @@
-import 'package:Markbase/dome/variable_notifier.dart';
+import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/collection.dart';
-import 'package:Markbase/ui_logic/common/app.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/database/widgets/bottom_bar.dart';
 import 'package:Markbase/ui_logic/database/widgets/collections.dart';
 import 'package:Markbase/ui_logic/database/widgets/notes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DatabaseScreen extends HookWidget {
+class DatabaseScreen extends StatefulWidget {
   const DatabaseScreen({Key? key}) : super(key: key);
 
   @override
+  State<DatabaseScreen> createState() => _DatabaseScreenState();
+}
+
+class _DatabaseScreenState extends State<DatabaseScreen> with AutomaticKeepAliveClientMixin {
+  DatabaseScreenLogic logic = DatabaseScreenLogic();
+
+  @override
+  void initState() {
+    super.initState();
+    logic.loadCollectionsAndNotesInRoot();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
-    useAutomaticKeepAlive();
-
-    DatabaseScreenLogic logic = DatabaseScreenLogic(
-      context,
-      currentCollection: VariableNotifier<Collection>(Collection.root()),
-    );
-
-    useEffect(() {
-      logic.init();
-      return null;
-    });
-
+    super.build(context);
     return Column(
       children: [
         Expanded(

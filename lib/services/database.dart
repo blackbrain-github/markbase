@@ -5,13 +5,18 @@ import 'dart:io';
 import 'package:Markbase/models/collection.dart';
 import 'package:Markbase/models/note.dart';
 import 'package:Markbase/models/user.dart';
-import 'package:Markbase/ui_logic/common/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 /// Firebase Firestore is used as database
+
+class CollectionNames {
+  static const String usersCollectionRef = "users";
+  static const String notesCollectionRef = "notes";
+  static const String collectionCollectionRef = "collections";
+}
 
 class Database {
   static Get get = Get();
@@ -29,43 +34,50 @@ class Database {
     return FlutterError('Auth error, user not authenticated in app');
   }
 
-  // Authentication
-  final User? _authenticatedUser = FirebaseAuth.instance.currentUser;
-
   bool _isAuthenticated() {
-    if (_authenticatedUser != null) {
+    if (FirebaseAuth.instance.currentUser != null) {
       return true;
     }
     return false;
   }
 
   // Used document
-  String _userStringRef() => StringConstants.usersCollectionRef + '/' + _authenticatedUser!.uid;
+  String _userStringRef() => CollectionNames.usersCollectionRef + '/' + FirebaseAuth.instance.currentUser!.uid;
 
-  CollectionReference<Map<String, dynamic>> _usersRef() => FirebaseConstants.firestore.collection(StringConstants.usersCollectionRef);
+  CollectionReference<Map<String, dynamic>> _usersRef() => FirebaseFirestore.instance.collection(CollectionNames.usersCollectionRef);
 
-  CollectionReference<Map<String, dynamic>> _notesRef() => FirebaseConstants.firestore.collection(_userStringRef() + '/' + StringConstants.notesCollectionRef);
+  CollectionReference<Map<String, dynamic>> _notesRef() => FirebaseFirestore.instance.collection(_userStringRef() + '/' + CollectionNames.notesCollectionRef);
 
-  CollectionReference<Map<String, dynamic>> _collectionsRef() => FirebaseConstants.firestore.collection(_userStringRef() + '/' + StringConstants.collectionCollectionRef);
+  CollectionReference<Map<String, dynamic>> _collectionsRef() => FirebaseFirestore.instance.collection(_userStringRef() + '/' + CollectionNames.collectionCollectionRef);
 }
 
 class Get extends Database {
   /// User \\\
   Future<UserModel> user() async {
     return _isAuthenticated()
-        ? _isAuthenticated()
-            ? await _usersRef().doc(_authenticatedUser!.uid).get().then(
-                (doc) {
-                  return UserModel.fromFirestore(doc);
-                },
-              ).catchError((e) => throw _error('Get', 'user', e))
-            : throw _authError()
+        ? await _usersRef().doc(FirebaseAuth.instance.currentUser!.uid).get().then(
+            (doc) {
+              if (doc.data() == null) {
+                throw 'not-found';
+              } else {
+                return UserModel.fromFirestore(doc);
+              }
+            },
+          ).catchError((e) => throw e)
         : throw _authError();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userAsStream() {
+    if (_isAuthenticated()) {
+      return _usersRef().doc(FirebaseAuth.instance.currentUser!.uid).snapshots();
+    } else {
+      throw _authError();
+    }
   }
 
   Future<String> userUsername() async {
     return _isAuthenticated()
-        ? await _usersRef().doc(_authenticatedUser!.uid).get().then(
+        ? await _usersRef().doc(FirebaseAuth.instance.currentUser!.uid).get().then(
             (doc) {
               return doc.data()!['username'];
             },
@@ -76,38 +88,36 @@ class Get extends Database {
   /// Path given in 'collection/collection' format, not '/collection/collection'
   Future<List<Note>> notes(String inCollectionPath) async {
     return _isAuthenticated()
-        ? _isAuthenticated()
-            ? await _notesRef().where('inCollectionPath', isEqualTo: inCollectionPath).get().then(
-                (snapshot) {
-                  return Note.manyFromSnapshot(snapshot);
-                },
-              ).catchError((e) => throw _error('Get', 'notes', e))
-            : throw _authError()
+        ? await _notesRef().where('inCollectionPath', isEqualTo: inCollectionPath).get().then(
+            (snapshot) {
+              return Note.manyFromSnapshot(snapshot);
+            },
+          ).catchError((e) => throw _error('Get', 'notes', e))
         : throw _authError();
   }
 
   Future<List<Collection>> collections(String parentPath) async {
     return _isAuthenticated()
-        ? _isAuthenticated()
-            ? await _collectionsRef().where('parentPath', isEqualTo: parentPath).get().then(
-                (snapshot) {
-                  return Collection.manyFromSnapshot(snapshot);
-                },
-              ).catchError((e) => throw _error('Get', 'collections', e))
-            : throw _authError()
+        ? await _collectionsRef().where('parentPath', isEqualTo: parentPath).get().then(
+            (snapshot) {
+              return Collection.manyFromSnapshot(snapshot);
+            },
+          ).catchError((e) => throw _error('Get', 'collections', e))
         : throw _authError();
   }
 
   Future<List<Note>> recentlyEditedNotes() async {
     return _isAuthenticated()
-        ? _isAuthenticated()
-            ? await _notesRef().orderBy('lastEdited').limit(10).get().then(
-                (snapshot) {
-                  return Note.manyFromSnapshot(snapshot);
-                },
-              ).catchError((e) => throw _error('Get', 'notes', e))
-            : throw _authError()
+        ? await _notesRef().orderBy('lastEdited', descending: true).limit(10).get().then(
+            (snapshot) {
+              return Note.manyFromSnapshot(snapshot);
+            },
+          ).catchError((e) => throw _error('Get', 'notes', e))
         : throw _authError();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> recentlyEditedNotesAsStream() {
+    return _isAuthenticated() ? _notesRef().orderBy('lastEdited').limit(10).snapshots() : throw _authError();
   }
 }
 
@@ -120,30 +130,20 @@ class Create extends Database {
       String? profileImageUrl;
       if (profileImage != null) {
         // Upload profile image to storage
-        try {
-          profileImageUrl = await FirebaseStorage.instance.ref('profile_images/${FirebaseAuth.instance.currentUser?.uid}').putFile(profileImage).then(
-                (p0) async => await p0.ref.getDownloadURL(),
-              );
-        } catch (e) {
-          print("profile image failed");
-          print(e);
-        }
+        profileImageUrl = await FirebaseStorage.instance.ref('profile_images/${FirebaseAuth.instance.currentUser?.uid}').putFile(profileImage).then(
+              (p0) async => await p0.ref.getDownloadURL(),
+            );
       }
 
       registerBatch.set(
-        _usersRef().doc(_authenticatedUser!.uid),
+        _usersRef().doc(FirebaseAuth.instance.currentUser!.uid),
         {
-          'created_at': FieldValue.serverTimestamp(), // Adds timestamp in server when created
-          'account_type': 'user',
-          'id': _authenticatedUser!.uid,
+          'createdAt': FieldValue.serverTimestamp(), // Adds timestamp in server when created
+          'id': FirebaseAuth.instance.currentUser!.uid,
           'username': username.toLowerCase(),
-          'email': _authenticatedUser!.email,
-          'full_name': fullName,
-          'profile_image': profileImageUrl ?? '',
-          'private': true,
-          'friends': [],
-          'sent_requests': [],
-          'received_requests': [],
+          'email': FirebaseAuth.instance.currentUser!.email,
+          'fullName': fullName,
+          'profileImageUrl': profileImageUrl ?? '',
         },
         SetOptions(
           merge: true,
@@ -161,18 +161,18 @@ class Create extends Database {
     }
   }
 
-  Future<Note> note(String inCollectionPath, String collectionId) async {
+  Future<Note> note(String parentPath, String? parentCollectionId) async {
     return _isAuthenticated()
         ? await _notesRef()
             .add({
               'body': '',
-              'inCollectionPath': inCollectionPath,
+              'inCollectionPath': parentPath,
               'lastEdited': FieldValue.serverTimestamp(),
             })
             .catchError((e) => throw _error('POST', 'data', e))
             .then((snapshot) async {
-              if (collectionId != '') {
-                await _collectionsRef().doc(collectionId).update({'noteCount': FieldValue.increment(1)});
+              if (parentCollectionId != null) {
+                await _collectionsRef().doc(parentCollectionId).update({'noteCount': FieldValue.increment(1)});
               }
               return Note.fromDocumentSnapshot(await snapshot.get());
             })
@@ -184,21 +184,21 @@ class Create extends Database {
         ? await _collectionsRef()
             .add({
               'title': title,
-              'path': 'parentPath/$title',
+              'path': parentPath == '/' ? '/$title' : '$parentPath/$title',
               'parentPath': parentPath,
               'collectionCount': 0,
               'noteCount': 0,
             })
             .catchError((e) => throw _error('POST', 'data', e))
             .then((snapshot) async {
-              if (parentId != '') {
+              if (parentId != null) {
                 await _collectionsRef().doc(parentId).update({'collectionCount': FieldValue.increment(1)});
               }
 
               return Collection(
                 id: snapshot.id,
                 title: title,
-                path: '${parentPath ?? ''}/$title',
+                path: parentPath == '/' ? '/$title' : '$parentPath/$title',
                 parentPath: parentPath ?? '',
                 collectionCount: 0,
                 noteCount: 0,
@@ -210,7 +210,6 @@ class Create extends Database {
 
 class Modify extends Database {
   Future<void> userProfileImage(File imageFile) async {
-    print("trying");
     FirebaseStorage storage = FirebaseStorage.instance;
 
     await storage.ref('profile_images/${FirebaseAuth.instance.currentUser?.uid}').putFile(imageFile).then((p0) async {
@@ -219,9 +218,9 @@ class Modify extends Database {
       WriteBatch wb = FirebaseFirestore.instance.batch();
 
       wb.update(
-        _usersRef().doc(_authenticatedUser?.uid),
+        _usersRef().doc(FirebaseAuth.instance.currentUser?.uid),
         {
-          "profile_image_url": url,
+          "profileImageUrl": url,
         },
       );
 
@@ -264,9 +263,9 @@ class Add extends Database {
         WriteBatch wb = FirebaseFirestore.instance.batch();
 
         wb.update(
-          _usersRef().doc(_authenticatedUser!.uid),
+          _usersRef().doc(FirebaseAuth.instance.currentUser!.uid),
           {
-            'profile_image_url': url,
+            'profileImageUrl': url,
           },
         );
 
@@ -284,6 +283,47 @@ class Add extends Database {
 }
 
 class Delete extends Database {
+  Future<void> collection(Collection collection) async {
+    if (_isAuthenticated()) {
+      WriteBatch wb = FirebaseFirestore.instance.batch();
+      await _collectionsRef().doc(collection.id).delete();
+
+      QuerySnapshot<Map<String, dynamic>> notes = await _notesRef().where('inCollectionPath', isGreaterThanOrEqualTo: collection.path).get();
+
+      for (var note in notes.docs) {
+        wb.delete(_notesRef().doc(note.id));
+      }
+
+      QuerySnapshot<Map<String, dynamic>> inCollection = await _collectionsRef()
+          .where(
+            'path',
+            isEqualTo: collection.parentPath,
+          )
+          .get();
+
+      if (inCollection.docs.isNotEmpty) {
+        wb.update(inCollection.docs.first.reference, {
+          'collectionCount': FieldValue.increment(-1),
+        });
+      }
+
+      QuerySnapshot<Map<String, dynamic>> allChildCollections = await _collectionsRef()
+          .where(
+            'path',
+            isGreaterThanOrEqualTo: collection.parentPath,
+          )
+          .get();
+
+      for (var i = 0; i < allChildCollections.size; i++) {
+        wb.delete(allChildCollections.docs[i].reference);
+      }
+
+      await wb.commit().catchError((e) => throw _error('Delete', 'collection', e));
+    } else {
+      throw _authError();
+    }
+  }
+
   Future<void> note(Note note) async {
     if (_isAuthenticated()) {
       WriteBatch wb = FirebaseFirestore.instance.batch();
@@ -291,7 +331,7 @@ class Delete extends Database {
 
       QuerySnapshot<Map<String, dynamic>> inCollection = await _collectionsRef()
           .where(
-            'inCollectionPath',
+            'path',
             isEqualTo: note.inCollectionPath,
           )
           .get();

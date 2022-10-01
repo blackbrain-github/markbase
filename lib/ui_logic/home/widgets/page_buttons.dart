@@ -1,52 +1,73 @@
-import 'package:Markbase/dome/widgets/listen.dart';
-import 'package:Markbase/ui_logic/common/widgets/buttons/important_button.dart';
-import 'package:Markbase/ui_logic/common/widgets/content_spacer.dart';
-import 'package:Markbase/ui_logic/home/home_screen_logic.dart';
+import 'package:Markbase/dome/widgets/buttons/custom_small_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class PageButtons extends HookWidget {
-  final HomeScreenLogic logic;
-  const PageButtons(this.logic, {Key? key}) : super(key: key);
+class PageButtons extends StatefulWidget {
+  final PageController pageController;
+  const PageButtons(this.pageController, {Key? key}) : super(key: key);
+
+  @override
+  State<PageButtons> createState() => _PageButtonsState();
+}
+
+class _PageButtonsState extends State<PageButtons> {
+  bool isHomeSelected() {
+    if (widget.pageController.positions.isNotEmpty) {
+      if (widget.pageController.page == 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool isDatabaseSelected() {
+    if (widget.pageController.positions.isNotEmpty) {
+      if (widget.pageController.page == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.pageController.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Listen(
-      to: logic.tab,
-      builder: (String tab) {
-        print("Tab: " + tab);
-        return Row(
-          children: [
-            ImportantButton(
-              onPressed: () {
-                if (logic.pageController.positions.isNotEmpty) {
-                  if (logic.pageController.page == 1.0) {
-                    logic.pageController.jumpToPage(0);
-                    logic.tab.set("home");
-                  }
-                }
-              },
-              title: 'Home',
-              selected: tab == 'home',
-              maxRoundedCorners: true,
-            ),
-            const HorizontalSpacer(d: 5),
-            ImportantButton(
-              onPressed: () {
-                if (logic.pageController.positions.isNotEmpty) {
-                  if (logic.pageController.page == 0.0) {
-                    logic.pageController.jumpToPage(1);
-                    logic.tab.set("database");
-                  }
-                }
-              },
-              title: 'Database',
-              selected: tab == 'database',
-              maxRoundedCorners: true,
-            ),
-          ],
-        );
-      },
+    return Row(
+      children: [
+        CustomSmallButton(
+          onPressed: () {
+            if (widget.pageController.positions.isNotEmpty) {
+              if (widget.pageController.page == 1.0) {
+                widget.pageController.jumpToPage(0);
+              }
+            }
+          },
+          title: 'Home',
+          selected: isHomeSelected(),
+        ),
+        const SizedBox(width: 5),
+        CustomSmallButton(
+          onPressed: () {
+            if (widget.pageController.positions.isNotEmpty) {
+              if (widget.pageController.page == 0.0) {
+                widget.pageController.jumpToPage(1);
+              }
+            }
+          },
+          title: 'Database',
+          selected: isDatabaseSelected(),
+        ),
+      ],
     );
   }
 }

@@ -1,33 +1,42 @@
 // Packages
-import 'package:Markbase/dome/variable_notifier.dart';
+import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
-import 'package:Markbase/ui_logic/common/app.dart';
-import 'package:Markbase/ui_logic/common/common_logic.dart';
 import 'package:Markbase/ui_logic/database/database_screen.dart';
-import 'package:Markbase/ui_logic/home/home_screen_logic.dart';
-import 'package:Markbase/ui_logic/home/widgets/floating_new_note_button.dart';
 import 'package:Markbase/ui_logic/home/widgets/logo_and_settings_button.dart';
 import 'package:Markbase/ui_logic/home/widgets/page_buttons.dart';
 import 'package:Markbase/ui_logic/recommended_notes/recommended_notes_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class HomeScreen extends HookWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    HomeScreenLogic logic = HomeScreenLogic(
-      context,
-      tab: VariableNotifier<String>("home"),
-      pageController: usePageController(initialPage: 0),
-    );
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  String tab = 'home';
+  late final PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Listen(
       to: CommonLogic.theme,
       builder: (theme) => Scaffold(
         backgroundColor: AppColors.getPrimaryBackgroundColor(),
-        floatingActionButton: FloatingNewNoteButton(logic),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -40,29 +49,20 @@ class HomeScreen extends HookWidget {
                   children: [
                     const LogoAndSettingsButton(),
                     const SizedBox(height: 5),
-                    PageButtons(logic),
+                    PageButtons(pageController),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 15),
             Expanded(
-              child: Listen(
-                to: logic.tab,
-                builder: (String tab) {
-                  if (logic.pageController.positions.isNotEmpty) {
-                    tab == 'home' ? logic.pageController.jumpToPage(0) : logic.pageController.jumpToPage(1);
-                  }
-                  return PageView(
-                    controller: logic.pageController,
-                    onPageChanged: (int i) => logic.tab.set(i == 0 ? 'home' : 'database'),
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      RecommendedNotesScreen(),
-                      DatabaseScreen(),
-                    ],
-                  );
-                },
+              child: PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  RecommendedNotesScreen(),
+                  const DatabaseScreen(),
+                ],
               ),
             ),
           ],

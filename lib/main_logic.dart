@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:Markbase/ui_logic/common/app.dart';
-import 'package:Markbase/ui_logic/common/common_logic.dart';
-import 'package:Markbase/ui_logic/common/constants.dart';
+import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -12,36 +12,32 @@ class MainLogic {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     if (Platform.isIOS) {
-      String minimumRequiredVersion = FirebaseConstants.remoteConfig.getString('minimum_required_version_ios');
+      String minimumRequiredVersion = FirebaseRemoteConfig.instance.getString('minimum_required_version_ios');
       String localVersion = packageInfo.version;
 
       // Used in settings screen
       CommonLogic.localVersion.set(localVersion, notify: false);
-      String latestVersion = FirebaseConstants.remoteConfig.getString('latest_version_ios');
+      String latestVersion = FirebaseRemoteConfig.instance.getString('latest_version_ios');
       CommonLogic.latestVersion.set(latestVersion, notify: false);
 
       if (int.parse(localVersion.replaceAll('.', '')) < int.parse(minimumRequiredVersion.replaceAll('.', ''))) {
-        throw 'update required';
-        // runApp(const Markbase(updateRequired: false));
+        throw 'update-required';
       } else {
         return;
-        // runApp(const Markbase());
       }
     } else if (Platform.isAndroid) {
-      String minimumRequiredVersion = FirebaseConstants.remoteConfig.getString('minimum_required_version_android');
+      String minimumRequiredVersion = FirebaseRemoteConfig.instance.getString('minimum_required_version_android');
       String localVersion = packageInfo.version;
 
       // Used in settings screen
       CommonLogic.localVersion.set(localVersion, notify: false);
-      String latestVersion = FirebaseConstants.remoteConfig.getString('latest_version_android');
+      String latestVersion = FirebaseRemoteConfig.instance.getString('latest_version_android');
       CommonLogic.latestVersion.set(latestVersion, notify: false);
 
       if (int.parse(localVersion.replaceAll('.', '')) < int.parse(minimumRequiredVersion.replaceAll('.', ''))) {
-        throw 'update required';
-        // runApp(const Markbase(updateRequired: true));
+        throw 'update-required';
       } else {
         return;
-        // runApp(const Markbase());
       }
     }
   }

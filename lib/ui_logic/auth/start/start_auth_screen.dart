@@ -1,10 +1,13 @@
+import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart' as Common;
+import 'package:Markbase/dome/navigate.dart';
+import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
+import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
+import 'package:Markbase/dome/widgets/screen.dart';
 import 'package:Markbase/ui_logic/auth/auth_logic.dart';
-import 'package:Markbase/ui_logic/common/app.dart';
-import 'package:Markbase/ui_logic/common/common_logic.dart' as Common;
-import 'package:Markbase/ui_logic/common/widgets/buttons/custom_button.dart';
-import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
-import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
-import 'package:Markbase/ui_logic/common/widgets/screen.dart';
+import 'package:Markbase/ui_logic/auth/log_in/log_in_screen_email.dart';
+import 'package:Markbase/ui_logic/auth/sign_up/sign_up_screen_email.dart';
+import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -21,14 +24,14 @@ class StartAuthScreen extends HookWidget {
           const Spacer(),
           Common.CommonLogic.theme.get == Common.Theme.light
               ? Image.asset(
-                  'assets/logos/markbase-full-logo-light.png',
+                  'assets/logos/markbase-full-logo-black.png',
                   height: 30,
                 )
               : Image.asset(
-                  'assets/logos/markbase-full-logo-dark.png',
+                  'assets/logos/markbase-full-logo-white.png',
                   height: 30,
                 ),
-          const Spacer(flex: 4),
+          const Spacer(flex: 3),
           CustomText(
             "By signing up, you agree to Markbase's policies and terms. To learn more, visit markba.se/policies",
             customColor: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.2),
@@ -37,8 +40,10 @@ class StartAuthScreen extends HookWidget {
           ),
           const SizedBox(height: 10),
           CustomButton(
-            onPressed: () => logic.signUpWithEmail(context),
+            onPressed: () => Navigate(context).to(SignUpScreenEmail(logic)),
             title: 'Sign up with email',
+            color: AppColors.getPrimaryBackgroundColor(),
+            textColor: AppColors.getPrimaryTextColor(),
             icon: Icon(
               Icons.email_rounded,
               size: 24,
@@ -47,8 +52,11 @@ class StartAuthScreen extends HookWidget {
           ),
           const SizedBox(height: 10),
           CustomButton(
-            onPressed: () => logic.continueWithGoogle(),
+            onPressed: () => logic.continueWithGoogle(context),
             title: 'Continue with Google',
+            isAsync: true,
+            color: AppColors.getPrimaryBackgroundColor(),
+            textColor: AppColors.getPrimaryTextColor(),
             icon: Image.asset('assets/icons/google-icon.png', height: 24, width: 24),
           ),
           const SizedBox(height: 10),
@@ -56,9 +64,13 @@ class StartAuthScreen extends HookWidget {
             children: [
               const CustomText('Already have an account?', color: TextColorType.secondary),
               const SizedBox(width: 5),
-              CustomAnimatedWidget(onPressed: () => logic.logInWithEmail(context), child: const CustomText('Log in', color: TextColorType.accent)),
+              CustomAnimatedWidget(
+                onPressed: () => Navigate(context).to(LogInScreenEmail(logic)),
+                child: const CustomText('Log in', color: TextColorType.accent, fontWeight: FontWeight.w600),
+              ),
             ],
           ),
+          const SizedBox(height: 15),
         ],
       ),
     );

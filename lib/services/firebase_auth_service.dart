@@ -1,5 +1,5 @@
 // Packages
-import 'package:Markbase/ui_logic/common/common_logic.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -39,7 +39,6 @@ class FirebaseAuthService {
         throw _error("Failed signing in with Google");
       }
     } catch (e) {
-      print(e);
       throw _error("Failed signing in with Google");
     }
   }
@@ -55,22 +54,17 @@ class FirebaseAuthService {
       CommonLogic.isLoggedIn.set(true, notify: false);
 
       return _credential;
-    } on FirebaseAuthException {
-      /*
-        A [FirebaseAuthException] maybe thrown with the following error code:
-
-        *email-already-in-use:
-        Thrown if there already exists an account with the given email address.
-        *invalid-email:
-        Thrown if the email address is not valid.
-        *operation-not-allowed:
-        Thrown if email/password accounts are not enabled. Enable email/password accounts in the Firebase Console, under the Auth tab.
-        *weak-password:
-        Thrown if the password is not strong enough.
-      */
-      rethrow;
-    } catch (e) {
-      throw _error("Error signing up with email");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        throw 'Email is used for another account';
+      } else if (e.code == 'invalid-email') {
+        throw 'Email is not valid';
+      } else if (e.code == 'operaation-not-allowd') {
+        throw 'Something went wrong';
+      } else if (e.code == 'weak-password') {
+        throw 'Something went wrong';
+      }
+      throw 'Something went wrong';
     }
   }
 
@@ -111,6 +105,23 @@ class FirebaseAuthService {
       CommonLogic.isLoggedIn.set(false, notify: false);
     } catch (e) {
       throw _error("Failed signing out");
+    }
+  }
+
+  // Reset password
+  static Future<void> sendPasswordResetLink(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  static Future<void> sendEmailConfirmation({UserCredential? userCredential}) async {
+    if (userCredential != null) {
+      userCredential.user?.sendEmailVerification();
+    } else {
+      if (FirebaseAuth.instance.currentUser != null) {
+        await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+      } else {
+        throw 'user-not-signed-in';
+      }
     }
   }
 }

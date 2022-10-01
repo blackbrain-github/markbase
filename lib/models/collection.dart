@@ -26,14 +26,14 @@ class Collection {
     return Collection(
       id: null,
       title: null,
-      path: '',
+      path: '/',
       parentPath: null,
       collectionCount: null,
       noteCount: null,
     );
   }
 
-  bool isRoot() => path == '';
+  bool isRoot() => path == '/';
 
   Map<String, dynamic> toMap() {
     List<Map<String, dynamic>> collectionsAsMap = [];

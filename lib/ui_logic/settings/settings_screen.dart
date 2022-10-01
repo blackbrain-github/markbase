@@ -1,6 +1,6 @@
 import 'package:Markbase/dome/navigate.dart';
-import 'package:Markbase/ui_logic/common/widgets/column_with_spacing.dart';
-import 'package:Markbase/ui_logic/common/widgets/screen.dart';
+import 'package:Markbase/dome/widgets/column_with_spacing.dart';
+import 'package:Markbase/dome/widgets/screen.dart';
 import 'package:Markbase/ui_logic/settings/setting_screens/theme_screen.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen_logic.dart';
 import 'package:Markbase/ui_logic/settings/widgets/account_details_mini_view.dart';
@@ -68,6 +68,7 @@ class SettingsScreen extends HookWidget {
             ),
             const SizedBox(height: 20),
             const MarkbaseDetails(),
+            const SizedBox(height: 20),
           ],
         ),
       ),

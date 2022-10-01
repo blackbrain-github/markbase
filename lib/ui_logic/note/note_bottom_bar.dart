@@ -1,7 +1,7 @@
+import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
 import 'package:Markbase/models/note.dart';
-import 'package:Markbase/ui_logic/common/app.dart';
-import 'package:Markbase/ui_logic/common/widgets/custom_animated_widget.dart';
-import 'package:Markbase/ui_logic/common/widgets/custom_text.dart';
+import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -79,7 +79,7 @@ class NoteBottomBar extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CustomText(
-                              note.inCollectionPath.replaceAll(note.title, "") + '/',
+                              (note.inCollectionPath.replaceAll(note.title, "") + '/').replaceAll("//", "/"),
                               color: TextColorType.secondary,
                               fontWeight: FontWeight.w600,
                               maxLines: 1,

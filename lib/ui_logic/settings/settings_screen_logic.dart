@@ -1,13 +1,13 @@
+import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:Markbase/dome/navigate.dart';
-import 'package:Markbase/ui_logic/auth_old/auth_screen.dart';
-import 'package:Markbase/ui_logic/common/app.dart';
-import 'package:Markbase/ui_logic/common/common_logic.dart';
-import 'package:Markbase/ui_logic/common/constants.dart';
+import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/settings/setting_screens/account_details_screen.dart';
-import 'package:app_review/app_review.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as Material;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreenLogic {
@@ -45,12 +45,22 @@ class SettingsScreenLogic {
   void switchAccount() {}
 
   void logOut(Material.BuildContext context) async {
-    await FirebaseConstants.auth.signOut();
+    await FirebaseAuth.instance.signOut();
     await AppVariables.appState.erase();
-    await FirebaseConstants.auth.currentUser?.reload();
+    await FirebaseAuth.instance.currentUser?.reload();
     CommonLogic.isLoggedIn.set(false, notify: false);
 
-    Navigate(context).to(const AuthScreen(), ableToGoBack: false);
+    // Reset theme
+    var systemBrightness = SchedulerBinding.instance.window.platformBrightness;
+    if (systemBrightness == Brightness.dark) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+      CommonLogic.theme.set(Theme.dark);
+    } else if (systemBrightness == Brightness.light) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+      CommonLogic.theme.set(Theme.light);
+    }
+
+    Navigate(context).to(const StartAuthScreen(), ableToGoBack: false);
   }
 
   // Need help with something?
@@ -69,10 +79,12 @@ class SettingsScreenLogic {
     }
   }
 
-  void rateUs() {
-    AppReview.requestReview.then((onValue) {
-      print(onValue);
-    });
+  void rateUs() async {
+    final InAppReview inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    }
   }
 
   void suggestANewFeature() async {
