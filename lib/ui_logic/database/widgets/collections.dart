@@ -1,10 +1,10 @@
 import 'package:Markbase/dome/show.dart';
 import 'package:Markbase/dome/widgets/column_with_spacing.dart';
 import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/collection.dart';
 import 'package:Markbase/ui_logic/common_widgets/collection_widget.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/database/widgets/new_collection_form.dart';
 import 'package:flutter/material.dart';

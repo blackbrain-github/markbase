@@ -1,6 +1,6 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomPopup extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:Markbase/dome/widgets/column_with_spacing.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/note.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/common_widgets/note_widget.dart';
 import 'package:Markbase/ui_logic/recommended_notes/recommended_notes_logic.dart';
 import 'package:flutter/material.dart';

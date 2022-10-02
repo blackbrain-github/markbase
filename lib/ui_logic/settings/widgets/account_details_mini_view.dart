@@ -1,10 +1,10 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/user.dart';
 import 'package:Markbase/services/database.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen_logic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

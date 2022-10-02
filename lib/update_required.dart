@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/screen.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

@@ -25,6 +25,15 @@ class Note {
     };
   }
 
+  Map<String, dynamic> toMapWithServerTimestamp() {
+    return {
+      'id': id,
+      'inCollectionPath': inCollectionPath,
+      'body': body,
+      'lastEdited': FieldValue.serverTimestamp(),
+    };
+  }
+
   static Note fromMap(Map<String, dynamic> map) {
     return Note(
       id: map['id'],

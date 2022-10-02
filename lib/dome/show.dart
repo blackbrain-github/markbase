@@ -1,10 +1,10 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_popup.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/models/collection.dart';
 import 'package:Markbase/models/note.dart';
 import 'package:Markbase/services/database.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/recommended_notes/recommended_notes_logic.dart';
 import 'package:flutter/material.dart';
 

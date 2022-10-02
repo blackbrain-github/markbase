@@ -1,8 +1,8 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/app_specific/common_logic.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/collection.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:Markbase/ui_logic/database/widgets/navigation_button.dart';
 import 'package:flutter/material.dart';

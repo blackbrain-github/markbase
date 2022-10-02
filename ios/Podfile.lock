@@ -624,9 +624,14 @@ PODS:
   - FBSDKCoreKit_Basics (13.0.0)
   - FBSDKLoginKit (13.0.0):
     - FBSDKCoreKit (= 13.0.0)
+  - Firebase/Analytics (9.4.0):
+    - Firebase/Core
   - Firebase/Auth (9.4.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 9.4.0)
+  - Firebase/Core (9.4.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (~> 9.4.0)
   - Firebase/CoreOnly (9.4.0):
     - FirebaseCore (= 9.4.0)
   - Firebase/Crashlytics (9.4.0):
@@ -653,6 +658,10 @@ PODS:
   - Firebase/Storage (9.4.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 9.4.0)
+  - firebase_analytics (9.3.7):
+    - Firebase/Analytics (= 9.4.0)
+    - firebase_core
+    - Flutter
   - firebase_app_check (0.0.8):
     - Firebase/CoreOnly (~> 9.4.0)
     - firebase_core
@@ -691,6 +700,24 @@ PODS:
     - Flutter
   - FirebaseABTesting (9.6.0):
     - FirebaseCore (~> 9.0)
+  - FirebaseAnalytics (9.4.0):
+    - FirebaseAnalytics/AdIdSupport (= 9.4.0)
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseAnalytics/AdIdSupport (9.4.0):
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleAppMeasurement (= 9.4.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseAppCheck (9.4.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
@@ -792,6 +819,26 @@ PODS:
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
+  - GoogleAppMeasurement (9.4.0):
+    - GoogleAppMeasurement/AdIdSupport (= 9.4.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - GoogleAppMeasurement/AdIdSupport (9.4.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 9.4.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - GoogleAppMeasurement/WithoutAdIdSupport (9.4.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - GoogleDataTransport (9.2.0):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
@@ -908,6 +955,7 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
+  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_app_check (from `.symlinks/plugins/firebase_app_check/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -942,6 +990,7 @@ SPEC REPOS:
     - FBSDKLoginKit
     - Firebase
     - FirebaseABTesting
+    - FirebaseAnalytics
     - FirebaseAppCheck
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -962,6 +1011,7 @@ SPEC REPOS:
     - FirebaseSharedSwift
     - FirebaseStorage
     - FirebaseStorageInternal
+    - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
@@ -979,6 +1029,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
     :path: ".symlinks/plugins/cloud_functions/ios"
+  firebase_analytics:
+    :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_app_check:
     :path: ".symlinks/plugins/firebase_app_check/ios"
   firebase_auth:
@@ -1035,6 +1087,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 96ec2ddb67a032e54f0754ea3d59db6f84f42389
   FBSDKLoginKit: 66ff4ddf372d9c3fc360e65ae048a47a482c29b9
   Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
+  firebase_analytics: 68bccd00d97cd473cc094981e86117f7b889bbd8
   firebase_app_check: 7a4e7596d56a2eb1492878df195d74cece20480c
   firebase_auth: 52e602836044f27539b5ba127cf64c38354d44a2
   firebase_core: 8e500850dd138c269d197c8dfca3ae886fa3b6f2
@@ -1045,6 +1098,7 @@ SPEC CHECKSUMS:
   firebase_remote_config: 0122ca8cf8aef19eb8666ad4aa8d0f811b619762
   firebase_storage: 7ded4c7f9dca5b3140ea681c6390180ed2d81fa4
   FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
+  FirebaseAnalytics: a1a24e72b7ba7f47045a4633f1abb545c07bd29c
   FirebaseAppCheck: aaacc3c6beaba35564344c694608e272bd9e9cb1
   FirebaseAppCheckInterop: d5ecda0c09f8069406643d6e0fa12c09d1b736e3
   FirebaseAuth: ae5d4402e1516497357d909162b091b3ca2a2e9c
@@ -1070,6 +1124,7 @@ SPEC CHECKSUMS:
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   google_sign_in: f669f45933dad48cd218dc3e189726bced3d19f4
+  GoogleAppMeasurement: 5d69e04287fc2c10cc43724bfa4bf31fc12c3dff
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7

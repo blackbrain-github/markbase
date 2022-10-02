@@ -1,7 +1,7 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_independent_text_field.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/database/database_screen_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

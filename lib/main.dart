@@ -112,6 +112,7 @@ class Markbase extends HookWidget {
     ]);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: updateRequired
           ? const UpdateRequired()
           : ListenBool(

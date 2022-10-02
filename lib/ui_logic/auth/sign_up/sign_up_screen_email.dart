@@ -1,10 +1,10 @@
 import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_independent_text_field.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/auth/auth_logic.dart';
 import 'package:Markbase/ui_logic/auth/sign_up/sign_up_screen_password.dart';
 import 'package:Markbase/ui_logic/auth/widgets/auth_screen.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreenEmail extends StatefulWidget {

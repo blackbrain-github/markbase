@@ -3,11 +3,11 @@ import 'package:Markbase/dome/app_specific/common_logic.dart' as Common;
 import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/screen.dart';
 import 'package:Markbase/ui_logic/auth/auth_logic.dart';
 import 'package:Markbase/ui_logic/auth/log_in/log_in_screen_email.dart';
 import 'package:Markbase/ui_logic/auth/sign_up/sign_up_screen_email.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 

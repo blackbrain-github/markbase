@@ -244,7 +244,7 @@ class Modify extends Database {
     return _isAuthenticated()
         ? await _notesRef()
             .doc(note.id)
-            .update(note.toMap())
+            .update(note.toMapWithServerTimestamp())
             .catchError(
               (e) => throw _error('Modify', 'note', e),
             )

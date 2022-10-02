@@ -4,12 +4,12 @@ import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_independent_text_field.dart';
+import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/services/database.dart';
 import 'package:Markbase/services/functions.dart';
 import 'package:Markbase/ui_logic/auth/auth_logic.dart';
 import 'package:Markbase/ui_logic/auth/sign_up/widgets/add_profile_photo.dart';
 import 'package:Markbase/ui_logic/auth/widgets/auth_screen.dart';
-import 'package:Markbase/ui_logic/common_widgets/custom_text.dart';
 import 'package:Markbase/ui_logic/master.dart';
 import 'package:flutter/material.dart';
 
