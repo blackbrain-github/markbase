@@ -34,8 +34,33 @@ class AuthLogic {
         }
       }
     } catch (e) {
-      print(e);
       Show(context).errorMessage(message: "Couldn't sign in with Google, try again later");
+    }
+  }
+
+  Future<void> signInWithApple(BuildContext context) async {
+    try {
+      UserCredential userCredential = await FirebaseAuthService.signInWithApple();
+
+      //await FirebaseAnalytics.instance.logLogin(loginMethod: "google");
+      if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+        // New user
+        Navigate(context).to(SignInScreenCompleteProfile(this));
+      } else {
+        try {
+          await FirebaseAuth.instance.currentUser?.reload();
+          var r = await Database.get.user();
+          CommonLogic.appUser.set(r);
+          Navigate(context).to(const Master(), ableToGoBack: false);
+        } catch (e) {
+          if (e == 'not-found') {
+            // User has an account but no profile was created
+            Navigate(context).to(SignInScreenCompleteProfile(this), ableToGoBack: false);
+          }
+        }
+      }
+    } catch (e) {
+      Show(context).errorMessage(message: "Couldn't sign in with Apple, try again later");
     }
   }
 

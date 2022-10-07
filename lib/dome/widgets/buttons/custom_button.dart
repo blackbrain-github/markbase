@@ -19,6 +19,7 @@ class CustomButton extends HookWidget {
   final Common.Theme? theme;
   final Color color;
   final Color? textColor;
+  final bool unfavorableOption;
 
   const CustomButton({
     required this.onPressed,
@@ -31,6 +32,7 @@ class CustomButton extends HookWidget {
     this.theme,
     this.color = AppColors.accentColor,
     this.textColor,
+    this.unfavorableOption = false,
   });
 
   @override
@@ -53,9 +55,9 @@ class CustomButton extends HookWidget {
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: color,
+            color: unfavorableOption ? Colors.transparent : color,
             border: Border.all(
-              color: AppColors.getInversePrimaryBackgroundColor(theme: theme).withOpacity(0.2),
+              color: unfavorableOption ? AppColors.accentColor : AppColors.getInversePrimaryBackgroundColor(theme: theme).withOpacity(0.2),
               width: 0.5,
             ),
             borderRadius: BorderRadius.circular(15),

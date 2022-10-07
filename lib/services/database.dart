@@ -348,4 +348,32 @@ class Delete extends Database {
       throw _authError();
     }
   }
+
+  Future<void> userAccount() async {
+    if (_isAuthenticated()) {
+      try {
+        QuerySnapshot<Map<String, dynamic>> userNotes = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('notes').get();
+        QuerySnapshot<Map<String, dynamic>> userCollections = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('collections').get();
+
+        WriteBatch wb = FirebaseFirestore.instance.batch();
+
+        for (var note in userNotes.docs) {
+          wb.delete(note.reference);
+        }
+        for (var collection in userCollections.docs) {
+          wb.delete(collection.reference);
+        }
+
+        wb.delete(FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid));
+
+        await wb.commit();
+
+        await FirebaseAuth.instance.currentUser?.delete();
+      } catch (e) {
+        throw 'Something went wrong deleting account';
+      }
+    } else {
+      throw 'Something went wrong deleting account';
+    }
+  }
 }

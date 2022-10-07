@@ -1,3 +1,4 @@
+import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/show.dart';
 import 'package:Markbase/dome/variable_notifier.dart';
@@ -12,6 +13,14 @@ class RecommendedNotesLogic {
   RecommendedNotesLogic();
 
   Future<void> loadRecentlyEditedNoteWidgets() async {
+    List<Note> cachedNotes = [];
+    var recentlyEditedNotesCached = AppVariables.appState.read('recently_edited');
+    if (recentlyEditedNotesCached != null) {
+      for (var note in recentlyEditedNotesCached) {
+        cachedNotes.add(Note.fromMap(note));
+      }
+      recentlyEditedNotes.set(cachedNotes);
+    }
     List<Note> notes = await Database.get.recentlyEditedNotes();
 
     // Save to cache
@@ -19,6 +28,7 @@ class RecommendedNotesLogic {
     for (var i = 0; i < notes.length; i++) {
       notesAsMap.add(notes[i].toMap());
     }
+    await AppVariables.appState.write('recently_edited', notesAsMap);
 
     recentlyEditedNotes.set(notes);
   }

@@ -1,10 +1,12 @@
 import 'package:Markbase/dome/app_specific/app.dart';
+import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/widgets/buttons/custom_button.dart';
 import 'package:Markbase/dome/widgets/custom_popup.dart';
 import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/models/collection.dart';
 import 'package:Markbase/models/note.dart';
 import 'package:Markbase/services/database.dart';
+import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/recommended_notes/recommended_notes_logic.dart';
 import 'package:flutter/material.dart';
 
@@ -210,6 +212,79 @@ class Show {
                             Navigator.of(context).maybePop();
                           },
                           title: 'No thanks',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<bool?> areYouSureYouWantToDeleteAccount() async {
+    return await showDialog<bool>(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.7),
+      barrierDismissible: true,
+      builder: (context) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.center,
+            child: Container(
+              width: MediaQuery.of(context).size.width - 20,
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: AppColors.getPrimaryBackgroundColor(),
+                border: Border.all(
+                  width: 0.5,
+                  color: AppColors.getInversePrimaryBackgroundColor().withOpacity(0.2),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const CustomText(
+                    'Are you sure?',
+                    size: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  const SizedBox(height: 5),
+                  const CustomText(
+                    'Deleting your account means that all of your notes and collections will be deleted forever. You cannot undo this operation',
+                    color: TextColorType.secondary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          onPressed: () {
+                            Navigator.of(context).maybePop(false);
+                          },
+                          title: 'cancel',
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: CustomButton(
+                          unfavorableOption: true,
+                          isAsync: true,
+                          onPressed: () async {
+                            await Database.delete.userAccount();
+                            Navigate(context).to(const StartAuthScreen(), ableToGoBack: false);
+                          },
+                          title: "I'm sure",
                         ),
                       ),
                     ],

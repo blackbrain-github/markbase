@@ -161,6 +161,22 @@ class AccountDetailsScreen extends HookWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: CustomAnimatedWidget(
+                          onPressed: () async {
+                            await Show(context).areYouSureYouWantToDeleteAccount();
+                          },
+                          child: const CustomText(
+                            'delete account',
+                            size: 16,
+                            fontWeight: FontWeight.w600,
+                            color: TextColorType.secondary,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
