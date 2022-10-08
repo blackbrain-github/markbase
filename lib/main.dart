@@ -19,6 +19,7 @@
 */
 // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\
 
+import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/app_specific/common_logic.dart' as App;
 import 'package:Markbase/dome/widgets/listen_bool.dart';
 import 'package:Markbase/firebase_options.dart';
@@ -27,7 +28,6 @@ import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/master.dart';
 import 'package:Markbase/update_required.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -37,6 +37,9 @@ import 'package:get_storage/get_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize GetStorage
+  await GetStorage.init();
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -53,16 +56,7 @@ void main() async {
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  await FirebaseAuth.instance.currentUser?.reload();
-  App.CommonLogic.isLoggedIn.set(FirebaseAuth.instance.currentUser != null, notify: true);
-
-  // Get user details
-  if (App.CommonLogic.isLoggedIn.get ?? false) {
-    await App.CommonLogic.getAppUser();
-  }
-
-  // Initialize GetStorage
-  await GetStorage.init();
+  MainLogic.confirmCurrentUser();
 
   // Set correct theme
   MainLogic.setTheme();
@@ -107,7 +101,12 @@ class _MarkbaseState extends State<Markbase> {
     ]);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          // Used to change scroll glow effect on Android
+          accentColor: AppColors.accentColor,
+        ),
+      ),
       home: updateRequired
           ? const UpdateRequired()
           : ListenBool(

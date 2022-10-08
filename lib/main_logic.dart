@@ -2,12 +2,30 @@ import 'dart:io';
 
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/app_specific/common_logic.dart';
+import 'package:Markbase/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MainLogic {
+  static Future<void> confirmCurrentUser() async {
+    Map<String, dynamic>? cachedUserModel = AppVariables.appState.read('user');
+
+    if (cachedUserModel != null) {
+      CommonLogic.appUser.set(UserModel.fromMap(cachedUserModel));
+    }
+
+    await FirebaseAuth.instance.currentUser?.reload();
+    CommonLogic.isLoggedIn.set(FirebaseAuth.instance.currentUser != null, notify: true);
+
+    // Get user details
+    if (CommonLogic.isLoggedIn.get ?? false) {
+      await CommonLogic.getAppUser(notify: true);
+    }
+  }
+
   static Future<void> checkMinimumRequiredVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

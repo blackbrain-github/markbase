@@ -4,6 +4,7 @@ import 'package:Markbase/dome/navigate.dart';
 import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
 import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
+import 'package:Markbase/models/user.dart';
 import 'package:Markbase/services/app_vibrate.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -40,17 +41,21 @@ class LogoAndSettingsButton extends HookWidget {
               ),
             ),
             CustomAnimatedWidget(
-              onPressed: () {
-                AppVibrate.medium();
-                Navigate(context).to(const SettingsScreen());
-              },
-              child: CustomText(
-                Common.CommonLogic.appUser.get?.username ?? 'You',
-                size: 18,
-                fontWeight: FontWeight.w700,
-                color: TextColorType.secondary,
-              ),
-            ),
+                onPressed: () {
+                  AppVibrate.medium();
+                  Navigate(context).to(const SettingsScreen());
+                },
+                child: Listen(
+                  to: Common.CommonLogic.appUser,
+                  builder: (UserModel? user) {
+                    return CustomText(
+                      user?.username ?? 'You',
+                      size: 18,
+                      fontWeight: FontWeight.w700,
+                      color: TextColorType.secondary,
+                    );
+                  },
+                )),
           ],
         );
       },

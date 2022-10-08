@@ -55,4 +55,15 @@ class UserModel {
       throw "Error trying to convert user from Firestore to UserModel";
     }
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'createdAt': createdAt.toIso8601String(),
+      'id': id,
+      'username': username,
+      'email': email,
+      'fullName': fullName,
+      'profileImageUrl': profileImageUrl,
+    };
+  }
 }

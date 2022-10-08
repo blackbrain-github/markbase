@@ -17,12 +17,20 @@ class CommonLogic {
   static Future<void> getAppUser({bool notify = false}) async {
     try {
       UserModel user = await Database.get.user();
-      appUser.set(user, notify: notify);
+      Map<String, dynamic>? cachedUserModel = AppVariables.appState.read('user');
+
+      if (cachedUserModel != user.toMap()) {
+        appUser.set(user, notify: notify);
+        await AppVariables.appState.write('user', user.toMap());
+      }
     } catch (e) {
       if (e == 'not-found') {
         isLoggedIn.set(false);
+        await AppVariables.appState.write('user', null);
+      } else {
+        isLoggedIn.set(false);
+        await AppVariables.appState.write('user', null);
       }
-      isLoggedIn.set(false);
     }
   }
 }
