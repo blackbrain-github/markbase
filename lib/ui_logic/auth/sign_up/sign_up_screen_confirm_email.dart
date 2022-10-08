@@ -51,9 +51,10 @@ class _SignUpScreenConfirmEmailState extends State<SignUpScreenConfirmEmail> {
             } else {
               if (signInMethods.contains('password')) {
                 setState(() => announcment = 'Email is used for another account, please sign in');
-              }
-              if (signInMethods.contains('google.com')) {
+              } else if (signInMethods.contains('google.com')) {
                 setState(() => announcment = 'Sign in with Google to continue');
+              } else if (signInMethods.contains('apple.com')) {
+                setState(() => announcment = 'Sign in with Apple to continue');
               }
             }
           },

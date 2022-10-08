@@ -34,7 +34,7 @@ class AuthLogic {
         }
       }
     } catch (e) {
-      Show(context).errorMessage(message: "Couldn't sign in with Google, try again later");
+      Show(context).errorMessage(message: "Couldn't sign in with Google, try again later" + e.toString());
     }
   }
 

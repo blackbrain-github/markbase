@@ -33,13 +33,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // \\ // \\ // \\ // \\ // \\ FIREBASE // \\ // \\ // \\ // \\ // \\
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -54,30 +51,15 @@ void main() async {
     minimumFetchInterval: const Duration(hours: 1),
   ));
 
-  try {
-    await FirebaseRemoteConfig.instance.fetchAndActivate();
-  } catch (e) {
-    // do something is configs are not able to be fetched?
-  }
-
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\
-
-  // \\ // \\ // \\ // \\ // \\ AUTH // \\ // \\ // \\ // \\ // \\
-
-  // Ensures app has correct auth state
   await FirebaseAuth.instance.currentUser?.reload();
-
-  // Updates isLoggedIn state in app
-  App.CommonLogic.isLoggedIn.set(FirebaseAuth.instance.currentUser != null, notify: false);
+  App.CommonLogic.isLoggedIn.set(FirebaseAuth.instance.currentUser != null, notify: true);
 
   // Get user details
   if (App.CommonLogic.isLoggedIn.get ?? false) {
     await App.CommonLogic.getAppUser();
   }
-
-  // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\ // \\
 
   // Initialize GetStorage
   await GetStorage.init();
@@ -85,20 +67,37 @@ void main() async {
   // Set correct theme
   MainLogic.setTheme();
 
-  // Check if app requires update and run
-  try {
-    await MainLogic.checkMinimumRequiredVersion();
-    runApp(const Markbase());
-  } catch (e) {
-    if (e == 'update-required') {
-      runApp(const UpdateRequired());
-    }
-  }
+  runApp(const Markbase());
 }
 
-class Markbase extends HookWidget {
-  final bool updateRequired;
-  const Markbase({this.updateRequired = false, Key? key}) : super(key: key);
+class Markbase extends StatefulWidget {
+  const Markbase({Key? key}) : super(key: key);
+
+  @override
+  State<Markbase> createState() => _MarkbaseState();
+}
+
+class _MarkbaseState extends State<Markbase> {
+  bool updateRequired = false;
+
+  void checkIfAppNeedsToBeUpdated() async {
+    try {
+      await FirebaseRemoteConfig.instance.fetchAndActivate();
+      await MainLogic.checkMinimumRequiredVersion();
+    } catch (e) {
+      if (e == 'update-required') {
+        setState(() {
+          updateRequired = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfAppNeedsToBeUpdated();
+  }
 
   @override
   Widget build(BuildContext context) {

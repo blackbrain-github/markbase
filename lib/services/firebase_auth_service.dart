@@ -27,8 +27,6 @@ class FirebaseAuthService {
         // Obtain the auth details from the request
         final GoogleSignInAuthentication googleAuth = await _googleUser.authentication;
 
-        List<String> existingSignInMethods = await _auth.fetchSignInMethodsForEmail(_googleUser.email);
-
         // Create a new credential
         final _credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,

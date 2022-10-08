@@ -47,17 +47,13 @@ class _SignUpScreenEmailState extends State<SignUpScreenEmail> {
         if (errorMessage != '') const SizedBox(height: 10),
         CustomButton(
           onPressed: () {
-            setState(() {
-              errorMessage = '';
-            });
+            setState(() => errorMessage = '');
             try {
               if (widget.logic.emailIsValid(controller.text)) {
                 Navigate(context).to(SignUpScreenPassword(widget.logic, email: controller.text));
               }
             } catch (e) {
-              setState(() {
-                errorMessage = '$e';
-              });
+              setState(() => errorMessage = '$e');
             }
           },
           title: 'Continue',
