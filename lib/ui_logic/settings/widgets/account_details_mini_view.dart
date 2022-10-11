@@ -20,7 +20,7 @@ class AccountDetailsMiniView extends HookWidget {
       to: CommonLogic.theme,
       builder: (_) {
         return CustomAnimatedWidget(
-          onPressed: () => logic.seeAccountDetails(context),
+          onPressed: () => logic.accountDetails(context),
           child: StreamBuilder(
             stream: Database.get.userAsStream(),
             builder: (context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> doc) {

@@ -131,35 +131,6 @@ class AccountDetailsScreen extends HookWidget {
                 ),
                 CustomText(user?.fullName ?? 'error'),
                 const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  child: CustomAnimatedWidget(
-                    onPressed: () => logic.logOut(context),
-                    child: const CustomText(
-                      'log out',
-                      size: 16,
-                      fontWeight: FontWeight.w600,
-                      color: TextColorType.accent,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  child: CustomAnimatedWidget(
-                    onPressed: () async {
-                      await Show(context).areYouSureYouWantToDeleteAccount();
-                    },
-                    child: const CustomText(
-                      'delete account',
-                      size: 16,
-                      fontWeight: FontWeight.w600,
-                      color: TextColorType.secondary,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

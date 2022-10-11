@@ -19,7 +19,7 @@ class SettingsSection extends HookWidget {
         CustomText(
           title,
           size: 20,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
         ),
         ColumnWithSpacing(
           d: settingSpacing,

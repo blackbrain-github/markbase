@@ -3,7 +3,6 @@ import 'package:Markbase/dome/widgets/column_with_spacing.dart';
 import 'package:Markbase/dome/widgets/screen.dart';
 import 'package:Markbase/ui_logic/settings/setting_screens/theme_screen.dart';
 import 'package:Markbase/ui_logic/settings/settings_screen_logic.dart';
-import 'package:Markbase/ui_logic/settings/widgets/account_details_mini_view.dart';
 import 'package:Markbase/ui_logic/settings/widgets/markbase_details.dart';
 import 'package:Markbase/ui_logic/settings/widgets/setting.dart';
 import 'package:Markbase/ui_logic/settings/widgets/settings_section.dart';
@@ -24,7 +23,6 @@ class SettingsScreen extends HookWidget {
           d: 40,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AccountDetailsMiniView(logic),
             SettingsSection(
               title: 'Look',
               settingSpacing: 0,
@@ -63,6 +61,26 @@ class SettingsScreen extends HookWidget {
                   type: SettingType.action,
                   title: 'suggest a new feature',
                   action: () => logic.suggestANewFeature(),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: 'Account',
+              settings: [
+                Setting(
+                  type: SettingType.action,
+                  title: 'profile',
+                  action: () => logic.accountDetails(context),
+                ),
+                Setting(
+                  type: SettingType.action,
+                  title: 'log out',
+                  action: () => logic.logOut(context),
+                ),
+                Setting(
+                  type: SettingType.action,
+                  title: 'delete account',
+                  action: () => logic.deleteAccount(context),
                 ),
               ],
             ),

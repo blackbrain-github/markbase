@@ -1,6 +1,7 @@
 import 'package:Markbase/dome/app_specific/app.dart';
 import 'package:Markbase/dome/app_specific/common_logic.dart';
 import 'package:Markbase/dome/navigate.dart';
+import 'package:Markbase/dome/show.dart';
 import 'package:Markbase/ui_logic/auth/start/start_auth_screen.dart';
 import 'package:Markbase/ui_logic/settings/setting_screens/account_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,11 +39,9 @@ class SettingsScreenLogic {
   }
 
   // Account
-  void seeAccountDetails(Material.BuildContext context) {
+  void accountDetails(Material.BuildContext context) {
     Navigate(context).to(AccountDetailsScreen(this));
   }
-
-  void switchAccount() {}
 
   void logOut(Material.BuildContext context) async {
     await FirebaseAuth.instance.signOut();
@@ -61,6 +60,10 @@ class SettingsScreenLogic {
     }
 
     Navigate(context).to(const StartAuthScreen(), ableToGoBack: false);
+  }
+
+  void deleteAccount(Material.BuildContext context) {
+    Show(context).areYouSureYouWantToDeleteAccount();
   }
 
   // Need help with something?
