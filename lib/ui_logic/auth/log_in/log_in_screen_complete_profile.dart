@@ -33,6 +33,9 @@ class _SignInScreenCompleteProfileState extends State<SignInScreenCompleteProfil
     super.initState();
     fullName = TextEditingController();
     username = TextEditingController();
+    if (widget.displayName != null) {
+      fullName.text = widget.displayName!;
+    }
   }
 
   @override
@@ -57,7 +60,7 @@ class _SignInScreenCompleteProfileState extends State<SignInScreenCompleteProfil
         ),
         const SizedBox(height: 15),
         CustomIndependentTextField(
-          title: widget.displayName ?? 'Enter full name',
+          title: 'Enter full name',
           controller: fullName,
         ),
         const SizedBox(height: 10),
