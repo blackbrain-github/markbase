@@ -8,6 +8,7 @@ import 'package:Markbase/services/firebase_auth_service.dart';
 import 'package:Markbase/ui_logic/auth/log_in/log_in_screen_complete_profile.dart';
 import 'package:Markbase/ui_logic/auth/sign_up/sign_up_screen_confirm_email.dart';
 import 'package:Markbase/ui_logic/master.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class AuthLogic {
     try {
       UserCredential userCredential = await FirebaseAuthService.continueWithGoogle();
 
-      //await FirebaseAnalytics.instance.logLogin(loginMethod: "google");
+      FirebaseAnalytics.instance.logLogin(loginMethod: "google");
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         // New user
         Navigate(context).to(SignInScreenCompleteProfile(this));
@@ -42,7 +43,7 @@ class AuthLogic {
     try {
       UserCredential userCredential = await FirebaseAuthService.signInWithApple();
 
-      //await FirebaseAnalytics.instance.logLogin(loginMethod: "google");
+      FirebaseAnalytics.instance.logLogin(loginMethod: "apple");
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         // New user
         Navigate(context).to(SignInScreenCompleteProfile(this, displayName: userCredential.user?.displayName));
