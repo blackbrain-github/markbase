@@ -6,7 +6,7 @@ import 'package:Markbase/dome/widgets/custom_animated_widget.dart';
 import 'package:Markbase/dome/widgets/custom_text.dart';
 import 'package:Markbase/dome/widgets/listen.dart';
 import 'package:Markbase/models/note.dart';
-import 'package:Markbase/services/app_vibrate.dart';
+import 'package:Markbase/dome/app_vibrate.dart';
 import 'package:Markbase/ui_logic/note/note_screen.dart';
 import 'package:flutter/material.dart';
 

@@ -15,7 +15,8 @@ import 'package:flutter/material.dart';
 
 class SignInScreenCompleteProfile extends StatefulWidget {
   final AuthLogic logic;
-  const SignInScreenCompleteProfile(this.logic, {Key? key}) : super(key: key);
+  final String? displayName;
+  const SignInScreenCompleteProfile(this.logic, {this.displayName, Key? key}) : super(key: key);
 
   @override
   State<SignInScreenCompleteProfile> createState() => _SignInScreenCompleteProfileState();
@@ -56,7 +57,7 @@ class _SignInScreenCompleteProfileState extends State<SignInScreenCompleteProfil
         ),
         const SizedBox(height: 15),
         CustomIndependentTextField(
-          title: 'Enter full name',
+          title: widget.displayName ?? 'Enter full name',
           controller: fullName,
         ),
         const SizedBox(height: 10),

@@ -41,11 +41,11 @@ class AuthLogic {
   Future<void> signInWithApple(BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuthService.signInWithApple();
-
+      print(userCredential.user?.displayName);
       //await FirebaseAnalytics.instance.logLogin(loginMethod: "google");
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         // New user
-        Navigate(context).to(SignInScreenCompleteProfile(this));
+        Navigate(context).to(SignInScreenCompleteProfile(this, displayName: userCredential.user?.displayName));
       } else {
         try {
           await FirebaseAuth.instance.currentUser?.reload();
@@ -55,7 +55,7 @@ class AuthLogic {
         } catch (e) {
           if (e == 'not-found') {
             // User has an account but no profile was created
-            Navigate(context).to(SignInScreenCompleteProfile(this), ableToGoBack: false);
+            Navigate(context).to(SignInScreenCompleteProfile(this, displayName: userCredential.user?.displayName), ableToGoBack: false);
           }
         }
       }
