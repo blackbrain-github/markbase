@@ -33,6 +33,8 @@ class _SignInScreenCompleteProfileState extends State<SignInScreenCompleteProfil
     super.initState();
     fullName = TextEditingController();
     username = TextEditingController();
+    print('COMPLETE PROFILE');
+    print(widget.displayName);
     if (widget.displayName != null) {
       fullName.text = widget.displayName!;
     }

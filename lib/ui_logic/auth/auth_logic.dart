@@ -20,32 +20,6 @@ class AuthLogic {
       FirebaseAnalytics.instance.logLogin(loginMethod: "google");
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         // New user
-        Navigate(context).to(SignInScreenCompleteProfile(this));
-      } else {
-        try {
-          await FirebaseAuth.instance.currentUser?.reload();
-          var r = await Database.get.user();
-          CommonLogic.appUser.set(r);
-          Navigate(context).to(const Master(), ableToGoBack: false);
-        } catch (e) {
-          if (e == 'not-found') {
-            // User has an account but no profile was created
-            Navigate(context).to(SignInScreenCompleteProfile(this), ableToGoBack: false);
-          }
-        }
-      }
-    } catch (e) {
-      Show(context).errorMessage(message: "Couldn't sign in with Google, try again later" + e.toString());
-    }
-  }
-
-  Future<void> signInWithApple(BuildContext context) async {
-    try {
-      UserCredential userCredential = await FirebaseAuthService.signInWithApple();
-
-      FirebaseAnalytics.instance.logLogin(loginMethod: "apple");
-      if (userCredential.additionalUserInfo?.isNewUser ?? true) {
-        // New user
         Navigate(context).to(SignInScreenCompleteProfile(this, displayName: userCredential.user?.displayName));
       } else {
         try {
@@ -57,6 +31,34 @@ class AuthLogic {
           if (e == 'not-found') {
             // User has an account but no profile was created
             Navigate(context).to(SignInScreenCompleteProfile(this, displayName: userCredential.user?.displayName), ableToGoBack: false);
+          }
+        }
+      }
+    } catch (e) {
+      Show(context).errorMessage(message: "Couldn't sign in with Google, try again later" + e.toString());
+    }
+  }
+
+  Future<void> signInWithApple(BuildContext context) async {
+    try {
+      List res = await FirebaseAuthService.signInWithApple();
+      UserCredential userCredential = res[0];
+      String? fullName = res[1]; // Only returned first time signing in with Apple
+
+      FirebaseAnalytics.instance.logLogin(loginMethod: "apple");
+      if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+        // New user
+        Navigate(context).to(SignInScreenCompleteProfile(this, displayName: fullName));
+      } else {
+        try {
+          await FirebaseAuth.instance.currentUser?.reload();
+          var r = await Database.get.user();
+          CommonLogic.appUser.set(r);
+          Navigate(context).to(const Master(), ableToGoBack: false);
+        } catch (e) {
+          if (e == 'not-found') {
+            // User has an account but no profile was created
+            Navigate(context).to(SignInScreenCompleteProfile(this, displayName: fullName), ableToGoBack: false);
           }
         }
       }

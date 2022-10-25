@@ -48,7 +48,10 @@ class FirebaseAuthService {
     }
   }
 
-  static Future<UserCredential> signInWithApple() async {
+  static Future<List> signInWithApple() async {
+    // returns
+    /// [UserCredential, givenName + familyName]
+
     try {
       /// Generates a cryptographically secure random nonce, to be included in a
       /// credential request.
@@ -87,13 +90,17 @@ class FirebaseAuthService {
         rawNonce: rawNonce,
       );
 
+      print("KASSDASDA");
+      print(appleCredential.familyName);
+      print(appleCredential.givenName);
+
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
       var userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 
       CommonLogic.isLoggedIn.set(true, notify: false);
 
-      return userCredential;
+      return [userCredential, (appleCredential.givenName != null) ? "${appleCredential.givenName} ${appleCredential.familyName}" : null];
     } catch (e) {
       FirebaseCrashlytics.instance.recordFlutterError(const FlutterErrorDetails(exception: 'Error signing in with Apple'));
       throw _error("Failed signing in with Apple");
